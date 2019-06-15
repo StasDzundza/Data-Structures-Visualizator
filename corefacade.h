@@ -2,8 +2,10 @@
 #define COREFACADE_H
 
 #include <QGraphicsView>
+#include "drawer.h"
 
 class StructureRepresentor;
+
 class CoreFacade
 {
 public:
@@ -15,6 +17,7 @@ public:
 private:
     StructureRepresentor*s1,*s2;
     StructureRepresentor*getStructureFromIndex(int struct_index);
+    Drawer*drawer;
 };
 
 #endif // COREFACADE_H

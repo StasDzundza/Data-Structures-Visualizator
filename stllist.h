@@ -8,7 +8,7 @@
 using std::list;
 using std::pair;
 
-class StlList : StructureRepresentor
+class StlList : public StructureRepresentor
 {
 public:
     StlList();

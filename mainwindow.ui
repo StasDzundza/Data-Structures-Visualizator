@@ -18,7 +18,7 @@
     <item row="0" column="0">
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
-       <widget class="QGraphicsView" name="graphicsView"/>
+       <widget class="QGraphicsView" name="view1"/>
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout">
@@ -60,7 +60,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QGraphicsView" name="graphicsView_2"/>
+       <widget class="QGraphicsView" name="view2"/>
       </item>
      </layout>
     </item>

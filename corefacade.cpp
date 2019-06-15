@@ -1,9 +1,10 @@
 #include "corefacade.h"
-#include "structurerepresentor.h"
-
+#include <fstream>
 CoreFacade::CoreFacade()
 {
-
+    s1 = new StlList;
+    s2 = new StlList;
+    drawer = new Drawer;
 }
 
 void CoreFacade::insert(int key, int value, int struct_index)
@@ -15,6 +16,7 @@ void CoreFacade::insert(int key, int value, int struct_index)
 void CoreFacade::drawStructure(int struct_index, QGraphicsView *view)
 {
     StructureRepresentor*s = getStructureFromIndex(struct_index);
+    drawer->createPngImage(s,view);
 
 }
 

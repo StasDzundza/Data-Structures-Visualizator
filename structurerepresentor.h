@@ -13,6 +13,7 @@ public:
     virtual int find(int key) = 0;
     virtual void randomInsert() = 0;
     virtual void writeDotFile(const char* filename) = 0;
+    int getType(){return static_cast<int>(type);}
 protected:
     Type type;
 };

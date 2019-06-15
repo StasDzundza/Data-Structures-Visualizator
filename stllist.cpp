@@ -1,5 +1,8 @@
 #include "stllist.h"
 #include <algorithm>
+#include <iostream>
+#include <fstream>
+
 StlList::StlList()
 {
 
@@ -39,5 +42,7 @@ void StlList::randomInsert()
 
 void StlList::writeDotFile(const char *filename)
 {
+    //std::ofstream fout(filename);
+
 
 }

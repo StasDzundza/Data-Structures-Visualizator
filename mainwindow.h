@@ -15,6 +15,10 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    bool eventFilter(QObject *object, QEvent *event)override;
+
+private slots:
+    void on_insertBTN_clicked();
 
 private:
     Ui::MainWindow *ui;
