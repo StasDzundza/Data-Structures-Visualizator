@@ -22,7 +22,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    CoreFacade*core;
+    //CoreFacade*core;
+    int currentStructureIndex;
 };
 
 #endif // MAINWINDOW_H

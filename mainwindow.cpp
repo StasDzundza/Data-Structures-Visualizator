@@ -6,7 +6,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    core = new CoreFacade;
+    //core = new CoreFacade;
     //ui->view2->setFocus();
     ui->view1->installEventFilter(this);
     ui->view2->installEventFilter(this);
@@ -24,12 +24,10 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
         QGraphicsView*v = dynamic_cast<QGraphicsView*>(object);
         if (v == ui->view1)
         {
-            //ui->view1->resize(50,50);
             ui->view1->setStyleSheet("QGraphicsView { border: 2px solid red }");
         }
         else if (v == ui->view2)
         {
-            //ui->view2->resize(50,50);
             ui->view2->setStyleSheet("QGraphicsView { border: 2px solid red }");
         }
     }
@@ -38,12 +36,10 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
         QGraphicsView*v = dynamic_cast<QGraphicsView*>(object);
         if (v == ui->view1)
         {
-            //ui->view1->resize(100,100);
             ui->view1->setStyleSheet("QGraphicsView { border: none }");
         }
         else if (v == ui->view2)
         {
-            //ui->view2->resize(100,100);
             ui->view2->setStyleSheet("QGraphicsView { border: none }");
         }
 
@@ -53,6 +49,7 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
 
 void MainWindow::on_insertBTN_clicked()
 {
-    core->insert(1,1,1);
-    core->drawStructure(1,ui->view1);
+    CoreFacade<int,int>*core = new CoreFacade<int,int>;
+    core->insert(1,1,currentStructureIndex);
+    core->drawStructure(currentStructureIndex,ui->view1);
 }

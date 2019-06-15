@@ -5,12 +5,13 @@
 
 using std::ostream;
 
+template<typename K,typename V>
 class StructureRepresentor{
 public:
-    enum Type{SplayTree,BPlus,LinkedList,HashTable,StlList,StlMap,StlVector};
-    virtual void insert(int key,int data) = 0;
-    virtual void remove(int key) = 0;
-    virtual int find(int key) = 0;
+    enum Type{SplayTree,RedBlack,LinkedList,HashTable,StlList,StlMap,StlVector};
+    virtual void insert(K key,V data) = 0;
+    virtual void remove(K key) = 0;
+    virtual int find(K key) = 0;
     virtual void randomInsert() = 0;
     virtual void writeDotFile(const char* filename) = 0;
     int getType(){return static_cast<int>(type);}

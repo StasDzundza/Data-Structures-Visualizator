@@ -3,21 +3,63 @@
 
 #include <QGraphicsView>
 #include "drawer.h"
+#include <fstream>
 
+template <typename K,typename V>
 class StructureRepresentor;
 
+template <typename K,typename V>
 class CoreFacade
 {
 public:
     CoreFacade();
+    void insert(K key,V value, int structureIndex);
 
-    void insert(int key,int value, int structureIndex);
     void drawStructure(int struct_index,QGraphicsView *view);
 
 private:
-    StructureRepresentor*s1,*s2;
-    StructureRepresentor*getStructureFromIndex(int struct_index);
-    Drawer*drawer;
+    StructureRepresentor<K,V>*s1,*s2;
+
+    StructureRepresentor<K,V>*getStructureFromIndex(int struct_index);
+
+    Drawer<K,V>*drawer;
 };
 
+template <typename K,typename V>
+CoreFacade<K,V>::CoreFacade()
+{
+    s1 = new StlList<int,int>();
+    s2 = new StlList<int,int>();
+    drawer = new Drawer<K,V>();
+}
+
+template <typename K,typename V>
+void CoreFacade<K,V>::insert(K key, V value, int struct_index)
+{
+    StructureRepresentor<K,V>*s = getStructureFromIndex(struct_index);
+    s->insert(key,value);
+}
+
+template <typename K,typename V>
+void CoreFacade<K,V>::drawStructure(int struct_index, QGraphicsView *view)
+{
+    StructureRepresentor<K,V>*s = getStructureFromIndex(struct_index);
+    drawer->createPngImage(s,view);
+
+}
+
+template <typename K,typename V>
+StructureRepresentor<K,V> *CoreFacade<K,V>::getStructureFromIndex(int struct_index)
+{
+    StructureRepresentor<K,V>*s = nullptr;
+    if(struct_index == 1)
+    {
+        s = s1;
+    }
+    else
+    {
+        s = s2;
+    }
+    return nullptr;
+}
 #endif // COREFACADE_H

@@ -1,6 +1,6 @@
 #include "officials.h"
 
-Officials::Officials()
+Official::Official()
 {
 
 }

@@ -1,5 +1,6 @@
 graphviz/
-
+*.dot
+*.png
 ### Qt ###
 # C++ objects and libs
 *.slo

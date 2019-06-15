@@ -2,10 +2,10 @@
 #define OFFICIALS_H
 #include <QString>
 
-class Officials
+class Official
 {
 public:
-    Officials();
+    Official();
 
     QString ministry;
 };
