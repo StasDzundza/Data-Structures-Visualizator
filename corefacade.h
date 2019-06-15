@@ -44,7 +44,16 @@ template <typename K,typename V>
 void CoreFacade<K,V>::drawStructure(int struct_index, QGraphicsView *view)
 {
     StructureRepresentor<K,V>*s = getStructureFromIndex(struct_index);
-    drawer->createPngImage(s,view);
+    QImage image = drawer->createPngImage(s);
+    QGraphicsPixmapItem *item = new QGraphicsPixmapItem( QPixmap::fromImage( image ) );
+    QGraphicsScene* scene = new QGraphicsScene;
+    view->setScene(scene);
+    view->fitInView(image.rect(),Qt::KeepAspectRatio);
+    view->scale(3,3);
+    //view->scale()
+
+    scene->addItem( item );
+    item->setPos( 0, 0 );
 
 }
 
@@ -60,6 +69,6 @@ StructureRepresentor<K,V> *CoreFacade<K,V>::getStructureFromIndex(int struct_ind
     {
         s = s2;
     }
-    return nullptr;
+    return s;
 }
 #endif // COREFACADE_H

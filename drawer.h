@@ -9,6 +9,7 @@
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
+#include <QDebug>
 
 using std::string;
 using std::map;
@@ -19,7 +20,7 @@ class Drawer
 public:
     Drawer();
 
-    QImage createPngImage(StructureRepresentor<K,V>*s,QGraphicsView*view);
+    QImage createPngImage(StructureRepresentor<K,V>*s);
 private:
     map<int,std::string> path;
 };
@@ -27,32 +28,25 @@ private:
 template<typename K,typename V>
 Drawer<K,V>::Drawer()
 {
-    //typedef typename StructureRepresentor<K,V>::Type Type;
-    path = {{0,"Output\\SplayTree\\"},{1,"Output\\RedBlack\\"},{2,"Output\\LinkedList\\"},{3,"Output\\StlList\\"}};
-
+    path = {{0,"..\\exam\\Output\\SplayTree\\"},{1,"..\\exam\\Output\\RedBlack\\"},{2,"..\\exam\\Output\\LinkedList\\"},{3,"..\\exam\\Output\\StlList\\"}};
 }
 
 template<typename K,typename V>
-QImage Drawer<K,V>::createPngImage(StructureRepresentor<K,V> *s,QGraphicsView*view)
+QImage Drawer<K,V>::createPngImage(StructureRepresentor<K,V> *s)
 {
-    string pathToFile = path[s->getType()];
-    string pathToImage = pathToFile;
+    string pathToFile ="";// path[s->getType()];
+    string pathToImage= pathToFile;
     pathToFile+="structure.dot";
-    pathToFile+="structure.png";
+    pathToImage+="structure.png";
+
+    qDebug()<<pathToFile.c_str();
+    qDebug()<<pathToImage.c_str();
     s->writeDotFile(pathToFile.c_str());
-    string dotFile = "..\\exam\\" + pathToFile;
     string commanStr = "";
-    commanStr += "..\\exam\\graphviz\\bin\\dot.exe -Tpng " + dotFile + " -o structure.png";
+    commanStr += "..\\exam\\graphviz\\bin\\dot.exe -Tpng " + pathToFile + " -o " + pathToImage;
     system(commanStr.c_str());
     QImage image(pathToImage.c_str());
 
-    QGraphicsPixmapItem *item = new QGraphicsPixmapItem( QPixmap::fromImage( image ) );
-    QGraphicsScene* scene = new QGraphicsScene;
-    view->setScene( scene);
-    view->fitInView(image.rect(),Qt::KeepAspectRatio);
-    //view->scale()
-
-    scene->addItem( item );
-    item->setPos( 0, 0 );
+    return image;
 }
 #endif // DRAWER_H
