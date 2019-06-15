@@ -12,7 +12,7 @@ public:
     virtual void remove(int key) = 0;
     virtual int find(int key) = 0;
     virtual void randomInsert() = 0;
-
+    virtual void writeDotFile(const char* filename) = 0;
 protected:
     Type type;
 };

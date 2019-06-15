@@ -12,10 +12,11 @@ class StlList : StructureRepresentor
 {
 public:
     StlList();
-    void insert(int key,int data)override;
+    void insert(int key,int value)override;
     void remove(int key)override;
     int find(int key)override;
     void randomInsert()override;
+    void writeDotFile(const char* filename)override;
 private:
     list<pair<int,int>>list;
 

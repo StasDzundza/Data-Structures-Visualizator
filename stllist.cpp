@@ -5,9 +5,9 @@ StlList::StlList()
 
 }
 
-void StlList::insert(int key,int data)
+void StlList::insert(int key,int value)
 {
-    list.emplace_front(key,data);
+    list.emplace_front(key,value);
 }
 
 void StlList::remove(int key)
@@ -33,6 +33,11 @@ int StlList::find(int key)
 }
 
 void StlList::randomInsert()
+{
+
+}
+
+void StlList::writeDotFile(const char *filename)
 {
 
 }

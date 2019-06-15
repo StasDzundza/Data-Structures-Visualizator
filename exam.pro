@@ -28,13 +28,15 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     officials.cpp \
-    stllist.cpp
+    stllist.cpp \
+    corefacade.cpp
 
 HEADERS += \
         mainwindow.h \
     structurerepresentor.h \
     officials.h \
-    stllist.h
+    stllist.h \
+    corefacade.h
 
 FORMS += \
         mainwindow.ui
