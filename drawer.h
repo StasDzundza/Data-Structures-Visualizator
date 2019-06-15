@@ -28,7 +28,7 @@ private:
 template<typename K,typename V>
 Drawer<K,V>::Drawer()
 {
-    path = {{0,"..\\exam\\Output\\SplayTree\\"},{1,"..\\exam\\Output\\RedBlack\\"},{2,"..\\exam\\Output\\LinkedList\\"},{3,"..\\exam\\Output\\StlList\\"}};
+    path = {{0,"..\\DataStructures Visualizator\\Output\\SplayTree\\"},{1,"..\\DataStructures Visualizator\\Output\\RedBlack\\"},{2,"..\\DataStructures Visualizator\\Output\\LinkedList\\"},{3,"..\\DataStructures Visualizator\\Output\\StlList\\"}};
 }
 
 template<typename K,typename V>
@@ -43,7 +43,7 @@ QImage Drawer<K,V>::createPngImage(StructureRepresentor<K,V> *s)
     qDebug()<<pathToImage.c_str();
     s->writeDotFile(pathToFile.c_str());
     string commanStr = "";
-    commanStr += "..\\exam\\graphviz\\bin\\dot.exe -Tpng " + pathToFile + " -o " + pathToImage;
+    commanStr += "..\\DataStructures Visualizator\\graphviz\\bin\\dot.exe -Tpng " + pathToFile + " -o " + pathToImage;
     system(commanStr.c_str());
     QImage image(pathToImage.c_str());
 
