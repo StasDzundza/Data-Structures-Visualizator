@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
+#include <QInputDialog>
+CoreFacade<int,int>*core = new CoreFacade<int,int>;
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -10,7 +11,10 @@ MainWindow::MainWindow(QWidget *parent) :
     //ui->view2->setFocus();
     ui->view1->installEventFilter(this);
     ui->view2->installEventFilter(this);
+
+    currentStructureIndex = 1;
 }
+
 
 MainWindow::~MainWindow()
 {
@@ -25,10 +29,12 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
         if (v == ui->view1)
         {
             ui->view1->setStyleSheet("QGraphicsView { border: 2px solid red }");
+            currentStructureIndex = 1;
         }
         else if (v == ui->view2)
         {
             ui->view2->setStyleSheet("QGraphicsView { border: 2px solid red }");
+            currentStructureIndex = 2;
         }
     }
     if(event->type() == QEvent::FocusOut)
@@ -48,8 +54,17 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
 }
 
 void MainWindow::on_insertBTN_clicked()
-{
-    CoreFacade<int,int>*core = new CoreFacade<int,int>;
-    core->insert(1,1,currentStructureIndex);
-    core->drawStructure(currentStructureIndex,ui->view1);
+{    
+    int key = QInputDialog::getInt(this,"Enter Key","Enter Key");
+    int value = QInputDialog::getInt(this,"Enter Value","Enter Value");
+    QGraphicsView*view;
+    if(currentStructureIndex == 1)
+    {
+        view = ui->view1;
+    }
+    else {
+        view = ui->view2;
+    }
+    core->insert(key,value,currentStructureIndex);
+    core->drawStructure(currentStructureIndex,view);
 }

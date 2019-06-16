@@ -38,7 +38,8 @@ HEADERS += \
     officials.h \
     stllist.h \
     corefacade.h \
-    drawer.h
+    drawer.h \
+    stlvector.h
 
 FORMS += \
         mainwindow.ui

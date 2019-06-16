@@ -11,6 +11,7 @@
 
 using std::list;
 using std::pair;
+using std::endl;
 
 template<typename K,typename V>
 class StlList : public StructureRepresentor<K,V>
@@ -72,8 +73,14 @@ void StlList<K,V>::randomInsert()
 template<typename K,typename V>
 void StlList<K,V>::writeDotFile(const char *filename)
 {
-    //std::ofstream fout(filename);
+    std::ofstream fout(filename);
+    fout << "digraph{"<<endl;
+    for(const pair<K,V>& pair : list)
+    {
+        fout << pair.second << "->";
+    }
 
-
+    fout << "end;" << endl;
+    fout << "}";
 }
 #endif // STLLIST_H

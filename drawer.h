@@ -43,7 +43,7 @@ QImage Drawer<K,V>::createPngImage(StructureRepresentor<K,V> *s)
     qDebug()<<pathToImage.c_str();
     s->writeDotFile(pathToFile.c_str());
     string commanStr = "";
-    commanStr += "..\\DataStructures Visualizator\\graphviz\\bin\\dot.exe -Tpng " + pathToFile + " -o " + pathToImage;
+    commanStr += "..\\DataStructuresVisualizator\\graphviz\\bin\\dot.exe -Tpng " + pathToFile + " -o " + pathToImage;
     system(commanStr.c_str());
     QImage image(pathToImage.c_str());
 

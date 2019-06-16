@@ -46,14 +46,20 @@ void CoreFacade<K,V>::drawStructure(int struct_index, QGraphicsView *view)
     StructureRepresentor<K,V>*s = getStructureFromIndex(struct_index);
     QImage image = drawer->createPngImage(s);
     QGraphicsPixmapItem *item = new QGraphicsPixmapItem( QPixmap::fromImage( image ) );
-    QGraphicsScene* scene = new QGraphicsScene;
+    QGraphicsScene* scene;
+    if(view->scene()==nullptr)
+    {
+        scene = new QGraphicsScene;
+    }
+    else
+    {
+        scene = view->scene();
+    }
     view->setScene(scene);
     view->fitInView(image.rect(),Qt::KeepAspectRatio);
-    view->scale(3,3);
-    //view->scale()
-
     scene->addItem( item );
     item->setPos( 0, 0 );
+
 
 }
 
