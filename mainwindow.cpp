@@ -1,7 +1,10 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <QInputDialog>
+#include <QMessageBox>
+
 CoreFacade<int,int>*core = new CoreFacade<int,int>;
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -50,7 +53,8 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
         }
 
     }
-        return false;
+    return QObject::eventFilter(object, event);
+
 }
 
 void MainWindow::on_insertBTN_clicked()
@@ -67,4 +71,59 @@ void MainWindow::on_insertBTN_clicked()
     }
     core->insert(key,value,currentStructureIndex);
     core->drawStructure(currentStructureIndex,view);
+}
+
+void MainWindow::on_removeBTN_clicked()
+{
+    int key = QInputDialog::getInt(this,"Enter Key","Enter Key");
+    QGraphicsView*view;
+    if(currentStructureIndex == 1)
+    {
+        view = ui->view1;
+    }
+    else {
+        view = ui->view2;
+    }
+    core->remove(key,currentStructureIndex);
+    core->drawStructure(currentStructureIndex,view);
+}
+
+void MainWindow::on_findBTN_clicked()
+{
+    int key = QInputDialog::getInt(this,"Enter Key","Enter Key");
+
+    auto value = core->find(key);
+
+    QString message = "Value with key " + QString::number(key) + " is " + value;
+    QMessageBox::information(this,"Find result",message);
+}
+
+void MainWindow::on_randomInsertBTN_clicked()
+{
+
+}
+
+void MainWindow::on_getListBTN_clicked()
+{
+
+}
+
+void MainWindow::on_union_2_clicked()
+{
+
+}
+
+void MainWindow::on_intersectionBTN_clicked()
+{
+
+}
+
+void MainWindow::on_symDiffBTN_clicked()
+{
+
+}
+
+void MainWindow::on_diffBTN_clicked()
+{
+
 }

@@ -39,7 +39,8 @@ HEADERS += \
     stllist.h \
     corefacade.h \
     drawer.h \
-    stlvector.h
+    stlvector.h \
+    stlmap.h
 
 FORMS += \
         mainwindow.ui
