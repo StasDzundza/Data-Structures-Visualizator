@@ -44,6 +44,13 @@
          </widget>
         </item>
         <item>
+         <widget class="QPushButton" name="sortBTN">
+          <property name="text">
+           <string>Sort</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QPushButton" name="randomInsertBTN">
           <property name="text">
            <string>Random Insert</string>
@@ -107,6 +114,37 @@
      <height>26</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <widget class="QMenu" name="menuNew">
+     <property name="title">
+      <string>New</string>
+     </property>
+     <widget class="QMenu" name="menuSTL_Conatiner">
+      <property name="title">
+       <string>STL Conatiner</string>
+      </property>
+      <addaction name="actionStlList_2"/>
+      <addaction name="actionStlMap"/>
+      <addaction name="actionStlVector"/>
+     </widget>
+     <widget class="QMenu" name="menuTree">
+      <property name="title">
+       <string>Tree</string>
+      </property>
+      <addaction name="actionSplayTree"/>
+      <addaction name="actionRedBlack_Tree"/>
+     </widget>
+     <addaction name="menuSTL_Conatiner"/>
+     <addaction name="menuTree"/>
+     <addaction name="actionHashTable"/>
+     <addaction name="actionForward_list"/>
+    </widget>
+    <addaction name="menuNew"/>
+   </widget>
+   <addaction name="menuFile"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
    <attribute name="toolBarArea">
@@ -117,6 +155,41 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionStlList_2">
+   <property name="text">
+    <string>StlList</string>
+   </property>
+  </action>
+  <action name="actionStlMap">
+   <property name="text">
+    <string>StlMap</string>
+   </property>
+  </action>
+  <action name="actionStlVector">
+   <property name="text">
+    <string>StlVector</string>
+   </property>
+  </action>
+  <action name="actionHashTable">
+   <property name="text">
+    <string>HashTable</string>
+   </property>
+  </action>
+  <action name="actionSplayTree">
+   <property name="text">
+    <string>SplayTree</string>
+   </property>
+  </action>
+  <action name="actionRedBlack_Tree">
+   <property name="text">
+    <string>Red-Black Tree</string>
+   </property>
+  </action>
+  <action name="actionForward_list">
+   <property name="text">
+    <string>Forward list</string>
+   </property>
+  </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

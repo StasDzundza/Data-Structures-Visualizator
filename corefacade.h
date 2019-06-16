@@ -37,6 +37,8 @@ public:
 
     vector<K> getKeys();
 
+    void sort();
+
 
 private:
     StructureRepresentor<K,V>*s1,*s2;
@@ -128,6 +130,12 @@ StructureRepresentor<K, V>* CoreFacade<K,V>::Diff(const StructureRepresentor<K, 
 
 template<typename K, typename V>
 vector<K> CoreFacade<K,V>::getKeys()
+{
+
+}
+
+template<typename K, typename V>
+void CoreFacade<K,V>::sort()
 {
 
 }

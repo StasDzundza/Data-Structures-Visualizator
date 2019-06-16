@@ -27,6 +27,8 @@ public:
     virtual StructureRepresentor<K,V>* Diff(const StructureRepresentor<K,V>&s) = 0;
 
     virtual vector<K> getKeys() = 0;
+
+    virtual void sort() = 0;
 protected:
     Type type;
 };

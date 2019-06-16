@@ -40,7 +40,9 @@ HEADERS += \
     corefacade.h \
     drawer.h \
     stlvector.h \
-    stlmap.h
+    stlmap.h \
+    list.h \
+    splaytree.h
 
 FORMS += \
         mainwindow.ui

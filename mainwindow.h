@@ -37,6 +37,8 @@ private slots:
 
     void on_diffBTN_clicked();
 
+    void on_sortBTN_clicked();
+
 private:
     Ui::MainWindow *ui;
     //CoreFacade*core;

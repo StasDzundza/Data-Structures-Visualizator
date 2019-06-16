@@ -28,6 +28,7 @@ public:
     StructureRepresentor<K,V>* SymDiff(const StructureRepresentor<K,V>&s)override;
     StructureRepresentor<K,V>* Diff(const StructureRepresentor<K,V>&s)override;
     vector<K> getKeys()override;
+    void sort()override;
 private:
     list<pair<int,int>>list;
 };
@@ -35,7 +36,7 @@ private:
 template<typename K,typename V>
 StlList<K,V>::StlList()
 {
-
+    StructureRepresentor<K,V>::type = StructureRepresentor<K,V>::Type::StlList;
 }
 
 template<typename K,typename V>
@@ -127,6 +128,12 @@ StructureRepresentor<K, V> *StlList<K, V>::Diff(const StructureRepresentor<K, V>
 
 template<typename K, typename V>
 vector<K> StlList<K, V>::getKeys()
+{
+
+}
+
+template<typename K, typename V>
+void StlList<K,V>::sort()
 {
 
 }

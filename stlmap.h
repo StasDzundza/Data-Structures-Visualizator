@@ -11,10 +11,10 @@ class StlMap: public StructureRepresentor<K,V>{
 public:
     StlMap();
     ~StlMap() = default;
-    void insert(int key, int value) override;
-    void remove(int key) override;
+    void insert(K key, V value) override;
+    void remove(K key) override;
     void clear() override;
-    V find(int key) override;
+    V find(K key) override;
     void randomInsert()override;
     void writeToFile(const char *fileName) override;
 
@@ -23,18 +23,26 @@ public:
     StructureRepresentor<K,V>* SymDiff(const StructureRepresentor<K,V>&s)override;
     StructureRepresentor<K,V>* Diff(const StructureRepresentor<K,V>&s)override;
     vector<K> getKeys()override;
+    void sort()override;
 private:
     std::map<K,V> m_map;
 };
 
-template<typename K,typename V>
-void StlMap<K,V>::insert(int key, int value)
+
+template<typename K, typename V>
+StlMap<K,V>::StlMap()
+{
+    StructureRepresentor<K,V>::type = StructureRepresentor<K,V>::Type::StlMap;
+}
+
+template<typename K, typename V>
+void StlMap<K,V>::insert(K key, V value)
 {
     m_map[key] = value;
 }
 
 template<typename K,typename V>
-void StlMap<K,V>::remove(int key)
+void StlMap<K,V>::remove(K key)
 {
     typename std::map<K,V>::const_iterator itr = m_map.find(key);
     if(itr != m_map.end()){
@@ -55,7 +63,7 @@ void StlMap<K,V>::randomInsert()
 }
 
 template<typename K,typename V>
-V StlMap<K,V>::find(int key)
+V StlMap<K,V>::find(K key)
 {
     typename std::map<K,V>::const_iterator itr = m_map.find(key);
     if(itr != m_map.end()){
@@ -110,6 +118,12 @@ StructureRepresentor<K, V> *StlMap<K,V>::Diff(const StructureRepresentor<K, V> &
 
 template<typename K, typename V>
 vector<K> StlMap<K, V>::getKeys()
+{
+
+}
+
+template<typename K, typename V>
+void StlMap<K,V>::sort()
 {
 
 }

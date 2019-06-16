@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QInputDialog>
 #include <QMessageBox>
-
+#include <list.h>
 CoreFacade<int,int>*core = new CoreFacade<int,int>;
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -124,6 +124,11 @@ void MainWindow::on_symDiffBTN_clicked()
 }
 
 void MainWindow::on_diffBTN_clicked()
+{
+
+}
+
+void MainWindow::on_sortBTN_clicked()
 {
 
 }
