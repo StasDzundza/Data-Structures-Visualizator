@@ -26,6 +26,7 @@ public:
     StructureRepresentor<K,V>* Diff(const StructureRepresentor<K,V>&s)override;
     vector<K> getKeys()override;
     void sort()override;
+    void clear()override;
 private:
     vector<pair<K,V>>m_vector;
 };
@@ -131,6 +132,12 @@ vector<K> StlVector<K,V>::getKeys()
 
 template<typename K, typename V>
 void StlVector<K,V>::sort()
+{
+
+}
+
+template<typename K, typename V>
+void StlVector<K,V>::clear()
 {
 
 }

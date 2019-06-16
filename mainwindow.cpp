@@ -2,7 +2,7 @@
 #include "ui_mainwindow.h"
 #include <QInputDialog>
 #include <QMessageBox>
-#include <list.h>
+#include <splaytree.h>
 CoreFacade<int,int>*core = new CoreFacade<int,int>;
 
 MainWindow::MainWindow(QWidget *parent) :

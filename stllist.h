@@ -29,6 +29,7 @@ public:
     StructureRepresentor<K,V>* Diff(const StructureRepresentor<K,V>&s)override;
     vector<K> getKeys()override;
     void sort()override;
+    void clear()override;
 private:
     list<pair<int,int>>list;
 };
@@ -134,6 +135,12 @@ vector<K> StlList<K, V>::getKeys()
 
 template<typename K, typename V>
 void StlList<K,V>::sort()
+{
+
+}
+
+template<typename K, typename V>
+void StlList<K,V>::clear()
 {
 
 }

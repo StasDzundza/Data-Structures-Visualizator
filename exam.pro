@@ -42,7 +42,8 @@ HEADERS += \
     stlvector.h \
     stlmap.h \
     list.h \
-    splaytree.h
+    splaytree.h \
+    chainedhashtable.h
 
 FORMS += \
         mainwindow.ui

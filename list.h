@@ -2,19 +2,29 @@
 #define LIST_H
 
 #include "structurerepresentor.h"
+#include <fstream>
 
 template<typename K,typename V>
-class List
+class List:public StructureRepresentor<K,V>
 {
 public:
     List();
     ~List();
-    void pop_front();
-    void clear();
-    void insert(K data,V value);
-    void remove(K key);
-    V find(K key);
+
+    void insert(K data,V value)override;
+    void remove(K key)override;
+    V find(K key)override;
+    void randomInsert()override;
+    void writeDotFile(const char* filename)override;
+    StructureRepresentor<K,V>* Union(const StructureRepresentor<K,V>&s)override;
+    StructureRepresentor<K,V>* Intersection(const StructureRepresentor<K,V>&s)override;
+    StructureRepresentor<K,V>* SymDiff(const StructureRepresentor<K,V>&s)override;
+    StructureRepresentor<K,V>* Diff(const StructureRepresentor<K,V>&s)override;
+    vector<K> getKeys()override;
+    void sort()override;
+    void clear()override;
 private:
+    void pop_front();
 
     template<typename T1, typename T2>
     class Node
@@ -117,5 +127,53 @@ V List<K, V>::find(K key)
             return V();
         }
     }
+}
+
+template<typename K,typename V>
+void List<K,V>::randomInsert()
+{
+
+}
+
+template<typename K,typename V>
+void List<K,V>::writeDotFile(const char *filename)
+{
+
+}
+
+template<typename K, typename V>
+StructureRepresentor<K, V> *List<K, V>::Union(const StructureRepresentor<K, V> &s)
+{
+
+}
+
+template<typename K, typename V>
+StructureRepresentor<K, V> *List<K, V>::Intersection(const StructureRepresentor<K, V> &s)
+{
+
+}
+
+template<typename K, typename V>
+StructureRepresentor<K, V> *List<K, V>::SymDiff(const StructureRepresentor<K, V> &s)
+{
+
+}
+
+template<typename K, typename V>
+StructureRepresentor<K, V> *List<K, V>::Diff(const StructureRepresentor<K, V> &s)
+{
+
+}
+
+template<typename K, typename V>
+vector<K> List<K, V>::getKeys()
+{
+
+}
+
+template<typename K, typename V>
+void List<K,V>::sort()
+{
+
 }
 #endif // LIST_H

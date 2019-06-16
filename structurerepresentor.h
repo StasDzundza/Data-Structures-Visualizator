@@ -29,6 +29,8 @@ public:
     virtual vector<K> getKeys() = 0;
 
     virtual void sort() = 0;
+
+    virtual void clear() = 0;
 protected:
     Type type;
 };
