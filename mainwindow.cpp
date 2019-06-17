@@ -36,29 +36,18 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
         if (v == ui->view1)
         {
             ui->view1->setStyleSheet("QGraphicsView { border: 2px solid red }");
+            ui->view2->setStyleSheet("QGraphicsView { border: none }");
             currentStructureIndex = 1;
         }
         else if (v == ui->view2)
         {
             ui->view2->setStyleSheet("QGraphicsView { border: 2px solid red }");
+            ui->view1->setStyleSheet("QGraphicsView { border: none }");
             currentStructureIndex = 2;
         }
     }
-    if(event->type() == QEvent::FocusOut)
-    {
-        QGraphicsView*v = dynamic_cast<QGraphicsView*>(object);
-        if (v == ui->view1)
-        {
-            ui->view1->setStyleSheet("QGraphicsView { border: none }");
-        }
-        else if (v == ui->view2)
-        {
-            ui->view2->setStyleSheet("QGraphicsView { border: none }");
-        }
 
-    }
     return QObject::eventFilter(object, event);
-
 }
 
 void MainWindow::on_insertBTN_clicked()
@@ -140,12 +129,12 @@ void MainWindow::on_intersectionBTN_clicked()
 
 void MainWindow::on_symDiffBTN_clicked()
 {
-
+    core->SymDiff();
 }
 
 void MainWindow::on_diffBTN_clicked()
 {
-
+    core->Diff();
 }
 
 void MainWindow::on_sortBTN_clicked()

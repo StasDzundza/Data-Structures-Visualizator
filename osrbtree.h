@@ -521,13 +521,28 @@ StructureRepresentor<Key,T> *OSTreeRB<Key,T>::Intersection( StructureRepresentor
 template<typename Key, typename T>
 StructureRepresentor<Key,T> *OSTreeRB<Key,T>::SymDiff( StructureRepresentor<Key,T> *s)
 {
-
+    StructureRepresentor<Key,T> *inters = this->Intersection(s);
+    StructureRepresentor<Key,T> *diff1 = this->Diff(inters);
+    StructureRepresentor<Key,T> *diff2 = s->Diff(inters);
+    StructureRepresentor<Key,T> *res = diff1->Union(diff2);
+    return res;
 }
 
 template<typename Key, typename T>
 StructureRepresentor<Key,T> *OSTreeRB<Key,T>::Diff( StructureRepresentor<Key,T> *s)
 {
-
+    vector<pair<Key,T>>p1 = this->getKeys();
+    vector<pair<Key,T>>p2 = s->getKeys();
+    StructureRepresentor<Key,T>*D = new OSTreeRB<Key,T>;
+    for(pair<Key,T>p:p1)
+    {
+        auto element = std::find_if(p2.begin(),p2.end(),[p](const pair<int,int>&pair){return pair.second == p.second;});
+        if(element == p2.end())
+        {
+            D->insert(p.first,p.second);
+        }
+    }
+    return D;
 }
 
 template<typename Key, typename T>

@@ -137,13 +137,29 @@ StructureRepresentor<K, V> *StlVector<K,V>::Intersection( StructureRepresentor<K
 template<typename K, typename V>
 StructureRepresentor<K, V> *StlVector<K,V>::SymDiff( StructureRepresentor<K, V> *s)
 {
+    StructureRepresentor<K, V> *inters = this->Intersection(s);
+    StructureRepresentor<K, V> *diff1 = this->Diff(inters);
+    StructureRepresentor<K, V> *diff2 = s->Diff(inters);
+    StructureRepresentor<K, V> *res = diff1->Union(diff2);
+    return res;
 
 }
 
 template<typename K, typename V>
 StructureRepresentor<K, V> *StlVector<K,V>::Diff( StructureRepresentor<K, V> *s)
 {
-
+    vector<pair<K,V>>p1 = this->getKeys();
+    vector<pair<K,V>>p2 = s->getKeys();
+    StructureRepresentor<K,V>*D = new StlVector<K,V>;
+    for(pair<K,V>p:p1)
+    {
+        auto element = std::find_if(p2.begin(),p2.end(),[p](const pair<int,int>&pair){return pair.second == p.second;});
+        if(element == p2.end())
+        {
+            D->insert(p.first,p.second);
+        }
+    }
+    return D;
 }
 
 template<typename K, typename V>

@@ -58,8 +58,8 @@ private:
 template <typename K,typename V>
 CoreFacade<K,V>::CoreFacade()
 {
-    s1 = new OSTreeRB<int,int>();
-    s2 = new OSTreeRB<int,int>();
+    s1 = new List<int,int>();
+    s2 = new List<int,int>();
     drawer = new Drawer<K,V>();
 
     sView = new SetOperationsView;
@@ -153,19 +153,22 @@ void CoreFacade<K,V>::Intersection()
 template<typename K, typename V>
 void CoreFacade<K,V>::SymDiff()
 {
-
+    StructureRepresentor<K, V>*U = s1->SymDiff(s2);
+    drawStructure(U,sView->getView());
 }
 
 template<typename K, typename V>
 void CoreFacade<K,V>::Diff()
 {
-
+    StructureRepresentor<K, V>*U = s1->Diff(s2);
+    drawStructure(U,sView->getView());
 }
 
 template<typename K, typename V>
 vector<K> CoreFacade<K,V>::getKeys()
 {
-
+    //StructureRepresentor<K,V>*s = getStructureFromIndex(struct_index);
+    //s->getKeys();
 }
 
 template<typename K, typename V>

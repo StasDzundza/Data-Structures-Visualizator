@@ -390,13 +390,28 @@ StructureRepresentor<T,_Val> *Splay_Tree<T,_Val>::Intersection( StructureReprese
 template<typename T, typename _Val>
 StructureRepresentor<T,_Val> *Splay_Tree<T,_Val>::SymDiff( StructureRepresentor<T,_Val> *s)
 {
-
+    StructureRepresentor<T,_Val> *inters = this->Intersection(s);
+    StructureRepresentor<T,_Val> *diff1 = this->Diff(inters);
+    StructureRepresentor<T,_Val> *diff2 = s->Diff(inters);
+    StructureRepresentor<T,_Val> *res = diff1->Union(diff2);
+    return res;
 }
 
 template<typename T, typename _Val>
 StructureRepresentor<T,_Val> *Splay_Tree<T,_Val>::Diff( StructureRepresentor<T,_Val> *s)
 {
-
+    vector<pair<T,_Val>>p1 = this->getKeys();
+    vector<pair<T,_Val>>p2 = s->getKeys();
+    StructureRepresentor<T,_Val>*D = new Splay_Tree<T,_Val>;
+    for(pair<T,_Val>p:p1)
+    {
+        auto element = std::find_if(p2.begin(),p2.end(),[p](const pair<int,int>&pair){return pair.second == p.second;});
+        if(element == p2.end())
+        {
+            D->insert(p.first,p.second);
+        }
+    }
+    return D;
 }
 
 template<typename T, typename _Val>
