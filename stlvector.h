@@ -18,7 +18,6 @@ public:
     void insert(K key,V value)override;
     void remove(K key)override;
     V find(K key)override;
-    void randomInsert()override;
     void writeDotFile(const char* filename)override;
     StructureRepresentor<K,V>* Union(StructureRepresentor<K,V>*s)override;
     StructureRepresentor<K,V>* Intersection(StructureRepresentor<K,V>*s)override;
@@ -65,12 +64,6 @@ V StlVector<K,V>::find(K key)
     {
         return V();
     }
-}
-
-template<typename K,typename V>
-void StlVector<K,V>::randomInsert()
-{
-
 }
 
 template<typename K,typename V>

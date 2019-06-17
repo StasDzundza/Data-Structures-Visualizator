@@ -31,7 +31,7 @@ public:
 
     void randomInsert();
 
-    V find(K key);
+    V find(int structure_index,K key);
 
     void Union();
 
@@ -41,7 +41,7 @@ public:
 
     void Diff();
 
-    vector<K> getKeys();
+    void getKeys(int structure_index);
 
     void sort();
 
@@ -140,7 +140,6 @@ void CoreFacade<K,V>::drawStructure(StructureRepresentor<K, V> *s,QGraphicsView*
         scene->removeItem(scene->items().at(0));
     }
     view->setScene(scene);
-    //view->fitInView(image.rect(),Qt::KeepAspectRatio);
     scene->addItem( item );
     item->setPos( 0, 0 );
     sView->show();
@@ -154,9 +153,10 @@ void CoreFacade<K,V>::randomInsert()
 }
 
 template<typename K, typename V>
-V CoreFacade<K,V>::find(K key)
+V CoreFacade<K,V>::find(int structure_index,K key)
 {
-
+    StructureRepresentor<K,V>*s = getStructureFromIndex(structure_index);
+    return s->find(key);
 }
 
 template<typename K, typename V>
@@ -188,10 +188,14 @@ void CoreFacade<K,V>::Diff()
 }
 
 template<typename K, typename V>
-vector<K> CoreFacade<K,V>::getKeys()
+void CoreFacade<K,V>::getKeys(int structure_index)
 {
-    //StructureRepresentor<K,V>*s = getStructureFromIndex(struct_index);
-    //s->getKeys();
+    StructureRepresentor<K, V>*keys = new StlList<K,V>;
+    StructureRepresentor<K,V>*s = getStructureFromIndex(structure_index);
+    vector<pair<K,V>>key_val = s->getKeys();
+    for(pair<K,V>p:key_val)
+        keys->insert(p.first,p.second);
+    drawStructure(keys,sView->getView());
 }
 
 template<typename K, typename V>
@@ -206,8 +210,11 @@ void CoreFacade<K,V>::clear(int struct_index)
     StructureRepresentor<K,V>*s = getStructureFromIndex(struct_index);
     s->clear();
     QGraphicsView*view = getViewFromIndex(struct_index);
-    view->scene()->clear();
-    view->scene()->deleteLater();
+    if(view->scene()!=nullptr)
+    {
+        view->scene()->clear();
+        view->scene()->deleteLater();
+    }
 }
 
 template<typename K, typename V>

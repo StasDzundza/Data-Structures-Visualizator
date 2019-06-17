@@ -15,7 +15,6 @@ public:
     void remove(K key) override;
     void clear() override;
     V find(K key) override;
-    void randomInsert()override;
     void writeDotFile(const char *fileName) override;
 
     StructureRepresentor<K,V>* Union(StructureRepresentor<K,V>*s)override;
@@ -54,12 +53,6 @@ template<typename K,typename V>
 void StlMap<K,V>::clear()
 {
     m_map.clear();
-}
-
-template<typename K, typename V>
-void StlMap<K,V>::randomInsert()
-{
-
 }
 
 template<typename K,typename V>

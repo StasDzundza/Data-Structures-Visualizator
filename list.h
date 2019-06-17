@@ -14,7 +14,6 @@ public:
     void insert(K data,V value)override;
     void remove(K key)override;
     V find(K key)override;
-    void randomInsert()override;
     void writeDotFile(const char* filename)override;
     StructureRepresentor<K,V>* Union(StructureRepresentor<K,V>*s)override;
     StructureRepresentor<K,V>* Intersection(StructureRepresentor<K,V>*s)override;
@@ -131,18 +130,15 @@ V List<K, V>::find(K key)
 }
 
 template<typename K,typename V>
-void List<K,V>::randomInsert()
-{
-
-}
-
-template<typename K,typename V>
 void List<K,V>::writeDotFile(const char *filename)
 {
-    std::ofstream fout(filename);
-    fout << "digraph{node[shape=record]\n" << std::endl;
+
 
     Node<K,V>*cur = head;
+    if(cur)
+    {
+        std::ofstream fout(filename);
+        fout << "digraph{node[shape=record]\n" << std::endl;
         while(cur)
         {
             fout << "      " << (quintptr)cur;
@@ -164,7 +160,9 @@ void List<K,V>::writeDotFile(const char *filename)
             cur = cur->next;
         }
         fout << "->end;\n";
-    fout << "}";
+        fout << "}";
+    }
+
 }
 
 template<typename K, typename V>

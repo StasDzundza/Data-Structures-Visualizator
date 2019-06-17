@@ -30,7 +30,8 @@ SOURCES += \
     officials.cpp \
     insertdialog.cpp \
     setoperationsview.cpp \
-    structurefactory.cpp
+    structurefactory.cpp \
+    randomgenerator.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -46,7 +47,8 @@ HEADERS += \
     insertdialog.h \
     osrbtree.h \
     setoperationsview.h \
-    structurefactory.h
+    structurefactory.h \
+    randomgenerator.h
 
 FORMS += \
         mainwindow.ui \

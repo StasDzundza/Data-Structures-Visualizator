@@ -17,7 +17,6 @@ public:
     virtual void insert(K key,V data) = 0;
     virtual void remove(K key) = 0;
     virtual V find(K key) = 0;
-    virtual void randomInsert() = 0;
     virtual void writeDotFile(const char* filename) = 0;
     int getType(){return static_cast<int>(type);}
 

@@ -30,7 +30,7 @@ public:
             res = new StlMap<int,int>;
         else if(name == "StlVector")
             res = new StlVector<int,int>;
-        else if(name == "Custom list")
+        else if(name == "Custom List")
             res = new List<int,int>;
         else if(name == "SplayTree")
             res = new Splay_Tree<int,int>;

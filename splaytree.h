@@ -57,7 +57,6 @@ public:
     void remove( T key) override;
     void clear() override;
     _Val find(T key) override;
-    void randomInsert()override;
     void writeDotFile(const char *fileName) override;
     StructureRepresentor<T,_Val>* Union( StructureRepresentor<T,_Val>*s)override;
     StructureRepresentor<T,_Val>* Intersection( StructureRepresentor<T,_Val>*s)override;
@@ -91,12 +90,7 @@ void Splay_Tree<T,_Val>::bst_print_dot_aux(Node * node, ofstream & fout)
         bst_print_dot_aux(node->right, fout);
     }
 }
-// A utility function to right rotate subtree rooted with y
-//				y                                     x
-//             / \     Zig (Right Rotation)          /  \
-//            x   T3   – - – - – - – - - ->         T1   y
-//           / \       < - - - - - - - - -              / \
-//          T1  T2     Zag (Left Rotation)            T2   T3
+
 template<class T, class _Val>
 typename Splay_Tree<T, _Val>::Node* Splay_Tree<T, _Val>::rightRotate(Node *y)
 {
@@ -106,12 +100,6 @@ typename Splay_Tree<T, _Val>::Node* Splay_Tree<T, _Val>::rightRotate(Node *y)
     return x;
 }
 
-// A utility function to left rotate subtree rooted with x
-//				y                                     x
-//             / \     Zig (Right Rotation)          /  \
-//            x   T3   – - – - – - – - - ->         T1   y
-//           / \       < - - - - - - - - -              / \
-//          T1  T2     Zag (Left Rotation)            T2   T3
 template<class T,class _Val>
 typename Splay_Tree<T,_Val>::Node* Splay_Tree<T,_Val>::leftRotate(Node *x)
 {
@@ -121,9 +109,6 @@ typename Splay_Tree<T,_Val>::Node* Splay_Tree<T,_Val>::leftRotate(Node *x)
     return y;
 }
 
-// This function brings the key at root if key is present in tree.
-// If key is not present, then it brings the last accessed item at
-// root.  This function modifies the tree and returns the new root
 template<class T,class _Val>
 typename Splay_Tree<T,_Val>::Node* Splay_Tree<T,_Val>::splay(Node *root, const T &key)
 {
@@ -186,9 +171,6 @@ typename Splay_Tree<T,_Val>::Node* Splay_Tree<T,_Val>::splay(Node *root, const T
     }
 }
 
-// The search function for Splay tree.  Note that this function
-// returns the new root of Splay Tree.  If key is present in tree
-// then, it is moved to root.
 template<class T,class _Val>
 typename Splay_Tree<T,_Val>::Node* Splay_Tree<T,_Val>::search(Node *root, const T &key)
 {
@@ -220,10 +202,6 @@ typename Splay_Tree<T,_Val>::Node* Splay_Tree<T,_Val>::insert(Node *root, const 
         newnode->left = root->left;
         root->left = nullptr;
     }
-
-    // If root's key is smaller, make root as left child
-    // of newnode and copy the right child of root to newnode
-    //left child of root is smaller that key, otherwise left child would stay in root
     else
     {
         newnode->left = root;
@@ -234,8 +212,6 @@ typename Splay_Tree<T,_Val>::Node* Splay_Tree<T,_Val>::insert(Node *root, const 
     return newnode; // newnode becomes new root
 }
 
-// The delete function for Splay tree. Note that this function
-// returns the new root of Splay Tree after removing the key
 template<class T, class _Val>
 typename Splay_Tree<T, _Val>::Node* Splay_Tree<T, _Val>::delete_key(Node *root, const T &key)
 {
@@ -246,13 +222,9 @@ typename Splay_Tree<T, _Val>::Node* Splay_Tree<T, _Val>::delete_key(Node *root, 
     root = splay(root, key);
 
     // If key is not present, then
-    // return root
     if (key != root->key)
         return root;
 
-    // If key is present
-    // If left child of root does not exist
-    // make root->right as root
     Node *temp;
     if (!root->left)
     {
@@ -264,21 +236,10 @@ typename Splay_Tree<T, _Val>::Node* Splay_Tree<T, _Val>::delete_key(Node *root, 
     else
     {
         temp = root;
-
-        /*Note: Since key == root->key,
-        so after Splay(root->left_child, key),
-        the tree we get will have no right child tree
-        and maximum node in left subtree will get splayed*/
-        // New root
         root = splay(root->left, key);
-
-        // Make right child of previous root  as
-        // new root's right child
         root->right = temp->right;
     }
 
-    // free the previous root node, that is,
-    // the node containing the key
     delete temp;
 
     // return root of the new Splay Tree
@@ -318,11 +279,6 @@ template<typename T, typename _Val> _Val Splay_Tree<T, _Val>::find(T key)
     }
 }
 
-template<typename T, typename _Val>
-void Splay_Tree<T, _Val>::randomInsert()
-{
-
-}
 template<typename T, typename _Val> void Splay_Tree<T, _Val>::insert( T key, _Val value)
 {
     tree = insert(tree, std::make_pair(key,value));

@@ -10,6 +10,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
+    ui->statusBar->showMessage("Structure type is : Custom list");
+
     ui->view1->installEventFilter(this);
     ui->view2->installEventFilter(this);
 
@@ -88,9 +90,9 @@ void MainWindow::on_findBTN_clicked()
 {
     int key = QInputDialog::getInt(this,"Enter Key","Enter Key");
 
-    auto value = core->find(key);
+    auto value = core->find(currentStructureIndex,key);
 
-    QString message = "Value with key " + QString::number(key) + " is " + value;
+    QString message = "Value with key " + QString::number(key) + " is " + QString::number(value);
     QMessageBox::information(this,"Find result",message);
 }
 
@@ -101,7 +103,7 @@ void MainWindow::on_randomInsertBTN_clicked()
 
 void MainWindow::on_getListBTN_clicked()
 {
-
+    core->getKeys(currentStructureIndex);
 }
 
 void MainWindow::on_union_2_clicked()
@@ -129,18 +131,8 @@ void MainWindow::on_sortBTN_clicked()
 
 }
 
-
-
 void MainWindow::on_clearBTN_clicked()
 {
-    QGraphicsView*view;
-    if(currentStructureIndex == 1)
-    {
-        view = ui->view1;
-    }
-    else {
-        view = ui->view2;
-    }
     core->clear(currentStructureIndex);
 }
 
@@ -149,11 +141,9 @@ void MainWindow::changeStructure()
     QObject *object = sender();
     QAction *action = qobject_cast<QAction*>(object);
     core->changeStructure(action->iconText());
-    //core->drawActive();
-    //
-    //int index = core->activeElement();
-    //if(index == 0)
-    //    ui->lineEdit_0->setText(action->iconText());
-    //else if(index == 1)
-    //    ui->lineEdit_1->setText(action->iconText());
+    ui->statusBar->showMessage("Structure type is : " + action->iconText());
+    if(action->iconText()=="Custom List" || action->iconText()=="StlList")
+        ui->sortBTN->setVisible(true);
+    else
+        ui->sortBTN->setVisible(false);
 }

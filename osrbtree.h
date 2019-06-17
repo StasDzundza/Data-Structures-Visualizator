@@ -47,7 +47,7 @@ public:
 
     OSTreeRB();
 
-    void writeDotFile(const char* fileName)
+    void writeDotFile(const char* fileName)override
     {
         ofstream fout(fileName);
         fout << "digraph {\n";
@@ -55,10 +55,9 @@ public:
         fout << "}";
         fout.close();
     }
-    void insert(Key key,T value);
-    void remove(Key key);
-    T find(Key value);
-    void randomInsert()override;
+    void insert(Key key,T value)override;
+    void remove(Key key)override;
+    T find(Key value)override;
     StructureRepresentor<Key,T>* Union( StructureRepresentor<Key,T>*s)override;
     StructureRepresentor<Key,T>* Intersection( StructureRepresentor<Key,T>*s)override;
     StructureRepresentor<Key,T>* SymDiff( StructureRepresentor<Key,T>*s)override;
@@ -592,16 +591,7 @@ void OSTreeRB<Key,T>::clear()
             if (temp->right != nullptr)
                 s.push(temp->right);
             delete temp;
-            temp = nullptr;
         }
-        root = nullptr;
 }
-
-template<typename Key, typename T>
-void OSTreeRB<Key,T>::randomInsert()
-{
-
-}
-
 
 #endif // OSRBTREE_H
