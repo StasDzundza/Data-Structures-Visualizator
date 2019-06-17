@@ -120,7 +120,18 @@ StructureRepresentor<K, V> *StlVector<K,V>::Union( StructureRepresentor<K, V> *s
 template<typename K, typename V>
 StructureRepresentor<K, V> *StlVector<K,V>::Intersection( StructureRepresentor<K, V> *s)
 {
-
+    vector<pair<K,V>>p1 = this->getKeys();
+    vector<pair<K,V>>p2 = s->getKeys();
+    StructureRepresentor<K,V>*I = new StlVector<K,V>;
+    for(pair<K,V>p:p1)
+    {
+        auto element = std::find_if(p2.begin(),p2.end(),[p](const pair<int,int>&pair){return pair.second == p.second;});
+        if(element !=p2.end())
+        {
+            I->insert(element->first,element->second);
+        }
+    }
+    return I;
 }
 
 template<typename K, typename V>

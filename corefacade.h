@@ -58,8 +58,8 @@ private:
 template <typename K,typename V>
 CoreFacade<K,V>::CoreFacade()
 {
-    s1 = new List<int,int>();
-    s2 = new List<int,int>();
+    s1 = new OSTreeRB<int,int>();
+    s2 = new OSTreeRB<int,int>();
     drawer = new Drawer<K,V>();
 
     sView = new SetOperationsView;
@@ -146,7 +146,8 @@ void CoreFacade<K,V>::Union()
 template<typename K, typename V>
 void CoreFacade<K,V>::Intersection()
 {
-
+    StructureRepresentor<K, V>*U = s1->Intersection(s2);
+    drawStructure(U,sView->getView());
 }
 
 template<typename K, typename V>

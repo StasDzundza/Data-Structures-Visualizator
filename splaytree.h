@@ -373,7 +373,18 @@ StructureRepresentor<T,_Val> *Splay_Tree<T,_Val>::Union( StructureRepresentor<T,
 template<typename T, typename _Val>
 StructureRepresentor<T,_Val> *Splay_Tree<T,_Val>::Intersection( StructureRepresentor<T,_Val> *s)
 {
-
+    vector<pair<T,_Val>>p1 = this->getKeys();
+    vector<pair<T,_Val>>p2 = s->getKeys();
+    StructureRepresentor<T,_Val>*I = new Splay_Tree<T,_Val>;
+    for(pair<T,_Val>p:p1)
+    {
+        auto element = std::find_if(p2.begin(),p2.end(),[p](const pair<int,int>&pair){return pair.second == p.second;});
+        if(element !=p2.end())
+        {
+            I->insert(element->first,element->second);
+        }
+    }
+    return I;
 }
 
 template<typename T, typename _Val>

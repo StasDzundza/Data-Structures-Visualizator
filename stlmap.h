@@ -16,7 +16,7 @@ public:
     void clear() override;
     V find(K key) override;
     void randomInsert()override;
-    void writeToFile(const char *fileName) override;
+    void writeDotFile(const char *fileName) override;
 
     StructureRepresentor<K,V>* Union(StructureRepresentor<K,V>*s)override;
     StructureRepresentor<K,V>* Intersection(StructureRepresentor<K,V>*s)override;
@@ -75,7 +75,7 @@ V StlMap<K,V>::find(K key)
 }
 
 template<typename K,typename V>
-void StlMap<K,V>::writeToFile(const char *fileName)
+void StlMap<K,V>::writeDotFile(const char *fileName)
 {
     std::ofstream fout(fileName);
     fout << "digraph{node[shape=record]\n" << std::endl;
@@ -112,7 +112,18 @@ StructureRepresentor<K, V> *StlMap<K, V>::Union( StructureRepresentor<K, V> *s)
 template<typename K, typename V>
 StructureRepresentor<K, V> *StlMap<K, V>::Intersection( StructureRepresentor<K, V> *s)
 {
-
+    vector<pair<K,V>>p1 = this->getKeys();
+    vector<pair<K,V>>p2 = s->getKeys();
+    StructureRepresentor<K,V>*I = new StlMap<K,V>;
+    for(pair<K,V>p:p1)
+    {
+        auto element = std::find_if(p2.begin(),p2.end(),[p](const pair<int,int>&pair){return pair.second == p.second;});
+        if(element !=p2.end())
+        {
+            I->insert(element->first,element->second);
+        }
+    }
+    return I;
 }
 
 template<typename K, typename V>

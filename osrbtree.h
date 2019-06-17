@@ -504,7 +504,18 @@ StructureRepresentor<Key,T> *OSTreeRB<Key,T>::Union( StructureRepresentor<Key,T>
 template<typename Key, typename T>
 StructureRepresentor<Key,T> *OSTreeRB<Key,T>::Intersection( StructureRepresentor<Key,T> *s)
 {
-
+    vector<pair<Key,T>>p1 = this->getKeys();
+    vector<pair<Key,T>>p2 = s->getKeys();
+    StructureRepresentor<Key,T>*I = new OSTreeRB<Key,T>;
+    for(pair<Key,T>p:p1)
+    {
+        auto element = std::find_if(p2.begin(),p2.end(),[p](const pair<int,int>&pair){return pair.second == p.second;});
+        if(element !=p2.end())
+        {
+            I->insert(element->first,element->second);
+        }
+    }
+    return I;
 }
 
 template<typename Key, typename T>

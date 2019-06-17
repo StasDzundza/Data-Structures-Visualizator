@@ -135,7 +135,7 @@ void MainWindow::on_union_2_clicked()
 
 void MainWindow::on_intersectionBTN_clicked()
 {
-
+    core->Intersection();
 }
 
 void MainWindow::on_symDiffBTN_clicked()
