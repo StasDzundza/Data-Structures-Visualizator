@@ -146,20 +146,11 @@
      </widget>
      <addaction name="menuSTL_Conatiner"/>
      <addaction name="menuTree"/>
-     <addaction name="actionHashTable"/>
      <addaction name="actionForward_list"/>
     </widget>
     <addaction name="menuNew"/>
    </widget>
    <addaction name="menuFile"/>
-  </widget>
-  <widget class="QToolBar" name="mainToolBar">
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionStlList_2">
@@ -194,7 +185,7 @@
   </action>
   <action name="actionForward_list">
    <property name="text">
-    <string>Forward list</string>
+    <string>Custom List</string>
    </property>
   </action>
  </widget>

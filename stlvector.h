@@ -182,6 +182,6 @@ void StlVector<K,V>::sort()
 template<typename K, typename V>
 void StlVector<K,V>::clear()
 {
-
+    m_vector.clear();
 }
 #endif // STLVECTOR_H

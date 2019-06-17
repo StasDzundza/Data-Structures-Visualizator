@@ -3,20 +3,16 @@
 
 #include <map>
 #include <string>
-#include "stllist.h"
-#include "stlvector.h"
-#include "stlmap.h"
-#include "list.h"
-#include "splaytree.h"
-#include "osrbtree.h"
 #include <QImage>
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>
 #include <QGraphicsScene>
 #include <QDebug>
+#include "structurerepresentor.h"
 
 using std::string;
 using std::map;
+
 
 template<typename K,typename V>
 class Drawer

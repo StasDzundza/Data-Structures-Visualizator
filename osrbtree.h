@@ -577,7 +577,24 @@ void OSTreeRB<Key,T>::sort()
 template<typename Key, typename T>
 void OSTreeRB<Key,T>::clear()
 {
+    if(this->isEmpty())
+            return;
 
+        std::stack<Node *> s;
+        s.push(this->root);
+        while (!s.empty())
+        {
+            Node *temp = s.top();
+            s.pop();
+            if (temp->left != nullptr)
+                s.push(temp->left);
+
+            if (temp->right != nullptr)
+                s.push(temp->right);
+            delete temp;
+            temp = nullptr;
+        }
+        root = nullptr;
 }
 
 template<typename Key, typename T>

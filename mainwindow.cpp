@@ -2,7 +2,6 @@
 #include "ui_mainwindow.h"
 #include <QInputDialog>
 #include <QMessageBox>
-#include <osrbtree.h>
 #include "insertdialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -10,7 +9,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    //core = new CoreFacade;
 
     ui->view1->installEventFilter(this);
     ui->view2->installEventFilter(this);
@@ -19,7 +17,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     insertWindow = new InsertDialog(this);
 
-    core = new CoreFacade<int,int>;
+    core = new CoreFacade<int,int>(ui->view1,ui->view2);
+
+    connect(ui->actionStlMap, &QAction::triggered, this, &MainWindow::changeStructure);
+    connect(ui->actionStlList_2, &QAction::triggered, this, &MainWindow::changeStructure);
+    connect(ui->actionStlVector, &QAction::triggered, this, &MainWindow::changeStructure);
+    connect(ui->actionForward_list, &QAction::triggered, this, &MainWindow::changeStructure);
+    connect(ui->actionSplayTree, &QAction::triggered, this, &MainWindow::changeStructure);
+    connect(ui->actionRedBlack_Tree, &QAction::triggered, this, &MainWindow::changeStructure);
 }
 
 
@@ -52,20 +57,10 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
 
 void MainWindow::on_insertBTN_clicked()
 {
-    //insertWindow->open();
-    QGraphicsView*view;
-    if(currentStructureIndex == 1)
-    {
-        view = ui->view1;
-    }
-    else {
-        view = ui->view2;
-    }
     int key = QInputDialog::getInt(this,"Get key","Enter key");
     int value = QInputDialog::getInt(this,"Get value","Enter value");
     core->insert(key,value,currentStructureIndex);
-    core->drawStructure(currentStructureIndex,view);
-
+    core->drawStructure(currentStructureIndex);
 }
 
 void MainWindow::Insert(const QString &key, const QString &value)
@@ -85,16 +80,8 @@ void MainWindow::Insert(const QString &key, const QString &value)
 void MainWindow::on_removeBTN_clicked()
 {
     int key = QInputDialog::getInt(this,"Enter Key","Enter Key");
-    QGraphicsView*view;
-    if(currentStructureIndex == 1)
-    {
-        view = ui->view1;
-    }
-    else {
-        view = ui->view2;
-    }
     core->remove(key,currentStructureIndex);
-    core->drawStructure(currentStructureIndex,view);
+    core->drawStructure(currentStructureIndex);
 }
 
 void MainWindow::on_findBTN_clicked()
@@ -154,5 +141,19 @@ void MainWindow::on_clearBTN_clicked()
     else {
         view = ui->view2;
     }
-    core->clear(currentStructureIndex,view);
+    core->clear(currentStructureIndex);
+}
+
+void MainWindow::changeStructure()
+{
+    QObject *object = sender();
+    QAction *action = qobject_cast<QAction*>(object);
+    core->changeStructure(action->iconText());
+    //core->drawActive();
+    //
+    //int index = core->activeElement();
+    //if(index == 0)
+    //    ui->lineEdit_0->setText(action->iconText());
+    //else if(index == 1)
+    //    ui->lineEdit_1->setText(action->iconText());
 }

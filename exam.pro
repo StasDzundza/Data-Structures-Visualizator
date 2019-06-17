@@ -28,11 +28,9 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     officials.cpp \
-    stllist.cpp \
-    corefacade.cpp \
-    drawer.cpp \
     insertdialog.cpp \
-    setoperationsview.cpp
+    setoperationsview.cpp \
+    structurefactory.cpp
 
 HEADERS += \
         mainwindow.h \

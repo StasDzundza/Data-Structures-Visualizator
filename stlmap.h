@@ -167,6 +167,6 @@ vector<pair<K,V>> StlMap<K, V>::getKeys()
 template<typename K, typename V>
 void StlMap<K,V>::sort()
 {
-
+    m_map.clear();
 }
 #endif // STLMAP_H

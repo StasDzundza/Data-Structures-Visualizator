@@ -6,6 +6,7 @@
 #include <fstream>
 #include <vector>
 #include "setoperationsview.h"
+#include "structurefactory.h"
 
 using std::vector;
 
@@ -18,13 +19,15 @@ class CoreFacade
 public:
     CoreFacade();
 
+    CoreFacade(QGraphicsView*v1,QGraphicsView*v2);
+
     void insert(K key,V value, int structureIndex);
 
     bool remove(K key, int structureIndex);
 
-    void drawStructure(int struct_index,QGraphicsView *view);
+    void drawStructure(int struct_index);
 
-    void drawStructure(StructureRepresentor<K,V>*s,QGraphicsView *view);
+    void drawStructure(StructureRepresentor<K,V>*s,QGraphicsView*view);
 
     void randomInsert();
 
@@ -42,7 +45,7 @@ public:
 
     void sort();
 
-    void clear(int struct_index,QGraphicsView *view);
+    void clear(int struct_index);
 
     void changeStructure(const QString &iconText);
 
@@ -51,9 +54,17 @@ private:
 
     StructureRepresentor<K,V>*getStructureFromIndex(int struct_index);
 
+    QGraphicsView *getViewFromIndex(int view_index);
+
     Drawer<K,V>*drawer;
 
     SetOperationsView*sView = nullptr;
+
+    StructureFactory*factory;
+
+    QGraphicsView*view1;
+
+    QGraphicsView*view2;
 };
 
 template <typename K,typename V>
@@ -61,9 +72,19 @@ CoreFacade<K,V>::CoreFacade()
 {
     s1 = new List<int,int>();
     s2 = new List<int,int>();
+
     drawer = new Drawer<K,V>();
 
     sView = new SetOperationsView;
+
+    factory = StructureFactory::getInstance();
+}
+
+template <typename K,typename V>
+CoreFacade<K,V>::CoreFacade(QGraphicsView*v1,QGraphicsView*v2):CoreFacade<K,V>()
+{
+    view1 = v1;
+    view2 = v2;
 }
 
 template <typename K,typename V>
@@ -81,9 +102,10 @@ bool CoreFacade<K,V>::remove(K key, int structureIndex)
 }
 
 template <typename K,typename V>
-void CoreFacade<K,V>::drawStructure(int struct_index, QGraphicsView *view)
+void CoreFacade<K,V>::drawStructure(int struct_index)
 {
     StructureRepresentor<K,V>*s = getStructureFromIndex(struct_index);
+    QGraphicsView*view = getViewFromIndex(struct_index);
     QImage image = drawer->createPngImage(s);
     QGraphicsPixmapItem *item = new QGraphicsPixmapItem( QPixmap::fromImage( image ) );
     QGraphicsScene* scene;
@@ -103,7 +125,7 @@ void CoreFacade<K,V>::drawStructure(int struct_index, QGraphicsView *view)
 }
 
 template<typename K, typename V>
-void CoreFacade<K,V>::drawStructure(StructureRepresentor<K, V> *s, QGraphicsView *view)
+void CoreFacade<K,V>::drawStructure(StructureRepresentor<K, V> *s,QGraphicsView*view)
 {
     QImage image = drawer->createPngImage(s);
     QGraphicsPixmapItem *item = new QGraphicsPixmapItem( QPixmap::fromImage( image ) );
@@ -179,10 +201,11 @@ void CoreFacade<K,V>::sort()
 }
 
 template<typename K, typename V>
-void CoreFacade<K,V>::clear(int struct_index,QGraphicsView *view)
+void CoreFacade<K,V>::clear(int struct_index)
 {
     StructureRepresentor<K,V>*s = getStructureFromIndex(struct_index);
     s->clear();
+    QGraphicsView*view = getViewFromIndex(struct_index);
     view->scene()->clear();
     view->scene()->deleteLater();
 }
@@ -190,7 +213,11 @@ void CoreFacade<K,V>::clear(int struct_index,QGraphicsView *view)
 template<typename K, typename V>
 void CoreFacade<K,V>::changeStructure(const QString &iconText)
 {
-
+    clear(1);
+    clear(2);
+    delete s1,s2;
+    s1 = factory->createStructure(iconText);
+    s2 = factory->createStructure(iconText);
 }
 
 template <typename K,typename V>
@@ -206,5 +233,20 @@ StructureRepresentor<K,V> *CoreFacade<K,V>::getStructureFromIndex(int struct_ind
         s = s2;
     }
     return s;
+}
+
+template<typename K, typename V>
+QGraphicsView *CoreFacade<K,V>::getViewFromIndex(int view_index)
+{
+    QGraphicsView* v = nullptr;
+    if(view_index == 1)
+    {
+        v = view1;
+    }
+    else
+    {
+        v = view2;
+    }
+    return v;
 }
 #endif // COREFACADE_H

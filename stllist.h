@@ -184,6 +184,6 @@ void StlList<K,V>::sort()
 template<typename K, typename V>
 void StlList<K,V>::clear()
 {
-
+    list.clear();
 }
 #endif // STLLIST_H

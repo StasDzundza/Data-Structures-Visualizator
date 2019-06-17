@@ -41,9 +41,9 @@ private slots:
 
     void on_sortBTN_clicked();
 
-
-
     void on_clearBTN_clicked();
+
+    void changeStructure();
 
 private:
     Ui::MainWindow *ui;
