@@ -20,11 +20,11 @@ public:
     V find(K key)override;
     void randomInsert()override;
     void writeDotFile(const char* filename)override;
-    StructureRepresentor<K,V>* Union(const StructureRepresentor<K,V>&s)override;
-    StructureRepresentor<K,V>* Intersection(const StructureRepresentor<K,V>&s)override;
-    StructureRepresentor<K,V>* SymDiff(const StructureRepresentor<K,V>&s)override;
-    StructureRepresentor<K,V>* Diff(const StructureRepresentor<K,V>&s)override;
-    vector<K> getKeys()override;
+    StructureRepresentor<K,V>* Union(StructureRepresentor<K,V>*s)override;
+    StructureRepresentor<K,V>* Intersection(StructureRepresentor<K,V>*s)override;
+    StructureRepresentor<K,V>* SymDiff(StructureRepresentor<K,V>*s)override;
+    StructureRepresentor<K,V>* Diff(StructureRepresentor<K,V>*s)override;
+    vector<pair<K,V>> getKeys()override;
     void sort()override;
     void clear()override;
 private:
@@ -101,33 +101,49 @@ void StlVector<K,V>::writeDotFile(const char *filename)
 }
 
 template<typename K, typename V>
-StructureRepresentor<K, V> *StlVector<K,V>::Union(const StructureRepresentor<K, V> &s)
+StructureRepresentor<K, V> *StlVector<K,V>::Union( StructureRepresentor<K, V> *s)
+{
+    vector<pair<K,V>>p1 = this->getKeys();
+    vector<pair<K,V>>p2 = s->getKeys();
+    StructureRepresentor<K,V>*sr = new StlVector<K,V>;
+    for(pair<K,V>p:p1)
+    {
+        sr->insert(p.first,p.second);
+    }
+    for(pair<K,V>p:p2)
+    {
+        sr->insert(p.first,p.second);
+    }
+    return sr;
+}
+
+template<typename K, typename V>
+StructureRepresentor<K, V> *StlVector<K,V>::Intersection( StructureRepresentor<K, V> *s)
 {
 
 }
 
 template<typename K, typename V>
-StructureRepresentor<K, V> *StlVector<K,V>::Intersection(const StructureRepresentor<K, V> &s)
+StructureRepresentor<K, V> *StlVector<K,V>::SymDiff( StructureRepresentor<K, V> *s)
 {
 
 }
 
 template<typename K, typename V>
-StructureRepresentor<K, V> *StlVector<K,V>::SymDiff(const StructureRepresentor<K, V> &s)
+StructureRepresentor<K, V> *StlVector<K,V>::Diff( StructureRepresentor<K, V> *s)
 {
 
 }
 
 template<typename K, typename V>
-StructureRepresentor<K, V> *StlVector<K,V>::Diff(const StructureRepresentor<K, V> &s)
+vector<pair<K,V>> StlVector<K,V>::getKeys()
 {
-
-}
-
-template<typename K, typename V>
-vector<K> StlVector<K,V>::getKeys()
-{
-
+    vector<pair<K,V>>key_val;
+    for(pair<K,V>p:m_vector)
+    {
+        key_val.emplace_back(p.first,p.second);
+    }
+    return key_val;
 }
 
 template<typename K, typename V>

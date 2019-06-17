@@ -4,7 +4,6 @@
 #include <QMainWindow>
 #include "corefacade.h"
 
-
 namespace Ui {
 class MainWindow;
 }
@@ -16,7 +15,10 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+
     bool eventFilter(QObject *object, QEvent *event)override;
+
+    void Insert(const QString &key, const QString &value);
 
 private slots:
     void on_insertBTN_clicked();
@@ -39,10 +41,14 @@ private slots:
 
     void on_sortBTN_clicked();
 
+
+
 private:
     Ui::MainWindow *ui;
     //CoreFacade*core;
     int currentStructureIndex;
+    QDialog *insertWindow;
+    CoreFacade<int,int>*core;
 };
 
 #endif // MAINWINDOW_H

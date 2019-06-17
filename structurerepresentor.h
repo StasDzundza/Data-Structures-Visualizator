@@ -3,9 +3,12 @@
 #include "officials.h"
 #include <iostream>
 #include <vector>
+#include <utility>
+#include <stack>
 
-//using std::ostream;
+using std::pair;
 using std::vector;
+using std::stack;
 
 template<typename K,typename V>
 class StructureRepresentor{
@@ -18,15 +21,15 @@ public:
     virtual void writeDotFile(const char* filename) = 0;
     int getType(){return static_cast<int>(type);}
 
-    virtual StructureRepresentor<K,V>* Union(const StructureRepresentor<K,V>&s) = 0;
+    virtual StructureRepresentor<K,V>* Union( StructureRepresentor<K,V>*s) = 0;
 
-    virtual StructureRepresentor<K,V>* Intersection(const StructureRepresentor<K,V>&s) = 0;
+    virtual StructureRepresentor<K,V>* Intersection( StructureRepresentor<K,V>*s) = 0;
 
-    virtual StructureRepresentor<K,V>* SymDiff(const StructureRepresentor<K,V>&s) = 0;
+    virtual StructureRepresentor<K,V>* SymDiff( StructureRepresentor<K,V>*s) = 0;
 
-    virtual StructureRepresentor<K,V>* Diff(const StructureRepresentor<K,V>&s) = 0;
+    virtual StructureRepresentor<K,V>* Diff( StructureRepresentor<K,V>*s) = 0;
 
-    virtual vector<K> getKeys() = 0;
+    virtual vector<pair<K,V>> getKeys() = 0;
 
     virtual void sort() = 0;
 

@@ -30,7 +30,9 @@ SOURCES += \
     officials.cpp \
     stllist.cpp \
     corefacade.cpp \
-    drawer.cpp
+    drawer.cpp \
+    insertdialog.cpp \
+    setoperationsview.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -43,10 +45,14 @@ HEADERS += \
     stlmap.h \
     list.h \
     splaytree.h \
-    chainedhashtable.h
+    insertdialog.h \
+    osrbtree.h \
+    setoperationsview.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    insertdialog.ui \
+    setoperationsview.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

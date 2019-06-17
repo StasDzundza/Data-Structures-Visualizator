@@ -30,6 +30,8 @@ class Splay_Tree : public StructureRepresentor<T,_Val>
 {
     using Node = SplayNode<T,_Val>;
 private:
+
+    bool isEmpty(){return tree == nullptr; }
     void bst_print_dot_aux(Node* node, ofstream& stream);
 
     Node *rightRotate(Node *y);
@@ -40,6 +42,7 @@ private:
     Node *search(Node *root, const T &key);
     Node *insert(Node *root, const pair<T, _Val> &value);
     Node* delete_key(Node *root, const T &key);
+    void* fillKeys(vector<pair<T,_Val>> &key_vals,Node*cur);
 
 
     void print_tree(Node* root, int shift);
@@ -54,12 +57,13 @@ public:
     void remove( T key) override;
     void clear() override;
     _Val find(T key) override;
+    void randomInsert()override;
     void writeDotFile(const char *fileName) override;
-    StructureRepresentor<T,_Val>* Union(const StructureRepresentor<T,_Val>&s)override;
-    StructureRepresentor<T,_Val>* Intersection(const StructureRepresentor<T,_Val>&s)override;
-    StructureRepresentor<T,_Val>* SymDiff(const StructureRepresentor<T,_Val>&s)override;
-    StructureRepresentor<T,_Val>* Diff(const StructureRepresentor<T,_Val>&s)override;
-    vector<T> getKeys()override;
+    StructureRepresentor<T,_Val>* Union( StructureRepresentor<T,_Val>*s)override;
+    StructureRepresentor<T,_Val>* Intersection( StructureRepresentor<T,_Val>*s)override;
+    StructureRepresentor<T,_Val>* SymDiff( StructureRepresentor<T,_Val>*s)override;
+    StructureRepresentor<T,_Val>* Diff( StructureRepresentor<T,_Val>*s)override;
+    vector<pair<T,_Val>> getKeys()override;
     void sort()override;
 };
 
@@ -313,6 +317,12 @@ template<typename T, typename _Val> _Val Splay_Tree<T, _Val>::find(T key)
         return _Val();
     }
 }
+
+template<typename T, typename _Val>
+void Splay_Tree<T, _Val>::randomInsert()
+{
+
+}
 template<typename T, typename _Val> void Splay_Tree<T, _Val>::insert( T key, _Val value)
 {
     tree = insert(tree, std::make_pair(key,value));
@@ -344,33 +354,61 @@ void Splay_Tree<T,_Val>::writeDotFile(const char * path)
 }
 
 template<typename T, typename _Val>
-StructureRepresentor<T,_Val> *Splay_Tree<T,_Val>::Union(const StructureRepresentor<T,_Val> &s)
+StructureRepresentor<T,_Val> *Splay_Tree<T,_Val>::Union( StructureRepresentor<T,_Val> *s)
+{
+    vector<pair<T,_Val>>p1 = this->getKeys();
+    vector<pair<T,_Val>>p2 = s->getKeys();
+    StructureRepresentor<T,_Val>*sr = new Splay_Tree<T,_Val>;
+    for(pair<T,_Val>p:p1)
+    {
+        sr->insert(p.first,p.second);
+    }
+    for(pair<T,_Val>p:p2)
+    {
+        sr->insert(p.first,p.second);
+    }
+    return sr;
+}
+
+template<typename T, typename _Val>
+StructureRepresentor<T,_Val> *Splay_Tree<T,_Val>::Intersection( StructureRepresentor<T,_Val> *s)
 {
 
 }
 
 template<typename T, typename _Val>
-StructureRepresentor<T,_Val> *Splay_Tree<T,_Val>::Intersection(const StructureRepresentor<T,_Val> &s)
+StructureRepresentor<T,_Val> *Splay_Tree<T,_Val>::SymDiff( StructureRepresentor<T,_Val> *s)
 {
 
 }
 
 template<typename T, typename _Val>
-StructureRepresentor<T,_Val> *Splay_Tree<T,_Val>::SymDiff(const StructureRepresentor<T,_Val> &s)
+StructureRepresentor<T,_Val> *Splay_Tree<T,_Val>::Diff( StructureRepresentor<T,_Val> *s)
 {
 
 }
 
 template<typename T, typename _Val>
-StructureRepresentor<T,_Val> *Splay_Tree<T,_Val>::Diff(const StructureRepresentor<T,_Val> &s)
+vector<pair<T,_Val>> Splay_Tree<T,_Val>::getKeys()
 {
+    vector<pair<T,_Val>>key_val;
+    if(this->isEmpty())
+        return key_val;
 
-}
+    stack<Node *> s;
+    s.push(this->tree);
+    while (!s.empty())
+    {
+        Node *temp = s.top();
+        s.pop();
+        if (temp->left != nullptr)
+            s.push(temp->left);
 
-template<typename T, typename _Val>
-vector<T> Splay_Tree<T,_Val>::getKeys()
-{
-
+        if (temp->right != nullptr)
+            s.push(temp->right);
+        key_val.emplace_back(temp->key,temp->value);
+    }
+    return key_val;
 }
 
 template<typename T, typename _Val>

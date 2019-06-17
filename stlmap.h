@@ -18,11 +18,11 @@ public:
     void randomInsert()override;
     void writeToFile(const char *fileName) override;
 
-    StructureRepresentor<K,V>* Union(const StructureRepresentor<K,V>&s)override;
-    StructureRepresentor<K,V>* Intersection(const StructureRepresentor<K,V>&s)override;
-    StructureRepresentor<K,V>* SymDiff(const StructureRepresentor<K,V>&s)override;
-    StructureRepresentor<K,V>* Diff(const StructureRepresentor<K,V>&s)override;
-    vector<K> getKeys()override;
+    StructureRepresentor<K,V>* Union(StructureRepresentor<K,V>*s)override;
+    StructureRepresentor<K,V>* Intersection(StructureRepresentor<K,V>*s)override;
+    StructureRepresentor<K,V>* SymDiff(StructureRepresentor<K,V>*s)override;
+    StructureRepresentor<K,V>* Diff(StructureRepresentor<K,V>*s)override;
+    vector<pair<K,V>> getKeys()override;
     void sort()override;
 private:
     std::map<K,V> m_map;
@@ -93,33 +93,49 @@ void StlMap<K,V>::writeToFile(const char *fileName)
 }
 
 template<typename K, typename V>
-StructureRepresentor<K, V> *StlMap<K, V>::Union(const StructureRepresentor<K, V> &s)
+StructureRepresentor<K, V> *StlMap<K, V>::Union( StructureRepresentor<K, V> *s)
+{
+    vector<pair<K,V>>p1 = this->getKeys();
+    vector<pair<K,V>>p2 = s->getKeys();
+    StructureRepresentor<K,V>*sr = new StlMap<K,V>;
+    for(pair<K,V>p:p1)
+    {
+        sr->insert(p.first,p.second);
+    }
+    for(pair<K,V>p:p2)
+    {
+        sr->insert(p.first,p.second);
+    }
+    return sr;
+}
+
+template<typename K, typename V>
+StructureRepresentor<K, V> *StlMap<K, V>::Intersection( StructureRepresentor<K, V> *s)
 {
 
 }
 
 template<typename K, typename V>
-StructureRepresentor<K, V> *StlMap<K, V>::Intersection(const StructureRepresentor<K, V> &s)
+StructureRepresentor<K, V> *StlMap<K, V>::SymDiff( StructureRepresentor<K, V> *s)
 {
 
 }
 
 template<typename K, typename V>
-StructureRepresentor<K, V> *StlMap<K, V>::SymDiff(const StructureRepresentor<K, V> &s)
+StructureRepresentor<K, V> *StlMap<K,V>::Diff( StructureRepresentor<K, V> *s)
 {
 
 }
 
 template<typename K, typename V>
-StructureRepresentor<K, V> *StlMap<K,V>::Diff(const StructureRepresentor<K, V> &s)
+vector<pair<K,V>> StlMap<K, V>::getKeys()
 {
-
-}
-
-template<typename K, typename V>
-vector<K> StlMap<K, V>::getKeys()
-{
-
+    vector<pair<K,V>>key_val;
+    for(pair<K,V>p:m_map)
+    {
+        key_val.emplace_back(p.first,p.second);
+    }
+    return key_val;
 }
 
 template<typename K, typename V>

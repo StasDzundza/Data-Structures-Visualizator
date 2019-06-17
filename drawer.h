@@ -3,8 +3,12 @@
 
 #include <map>
 #include <string>
-#include "structurerepresentor.h"
 #include "stllist.h"
+#include "stlvector.h"
+#include "stlmap.h"
+#include "list.h"
+#include "splaytree.h"
+#include "osrbtree.h"
 #include <QImage>
 #include <QGraphicsView>
 #include <QGraphicsPixmapItem>

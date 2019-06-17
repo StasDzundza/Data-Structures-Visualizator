@@ -16,11 +16,11 @@ public:
     V find(K key)override;
     void randomInsert()override;
     void writeDotFile(const char* filename)override;
-    StructureRepresentor<K,V>* Union(const StructureRepresentor<K,V>&s)override;
-    StructureRepresentor<K,V>* Intersection(const StructureRepresentor<K,V>&s)override;
-    StructureRepresentor<K,V>* SymDiff(const StructureRepresentor<K,V>&s)override;
-    StructureRepresentor<K,V>* Diff(const StructureRepresentor<K,V>&s)override;
-    vector<K> getKeys()override;
+    StructureRepresentor<K,V>* Union(StructureRepresentor<K,V>*s)override;
+    StructureRepresentor<K,V>* Intersection(StructureRepresentor<K,V>*s)override;
+    StructureRepresentor<K,V>* SymDiff(StructureRepresentor<K,V>*s)override;
+    StructureRepresentor<K,V>* Diff(StructureRepresentor<K,V>*s)override;
+    vector<pair<K,V>> getKeys()override;
     void sort()override;
     void clear()override;
 private:
@@ -48,6 +48,7 @@ List<K,V>::List()
 {
     Size = 0;
     head = NULL;
+    StructureRepresentor<K,V>::type = StructureRepresentor<K,V>::Type::LinkedList;
 }
 template<typename K, typename V>
 List<K, V>::~List()
@@ -138,37 +139,80 @@ void List<K,V>::randomInsert()
 template<typename K,typename V>
 void List<K,V>::writeDotFile(const char *filename)
 {
+    std::ofstream fout(filename);
+    fout << "digraph{node[shape=record]\n" << std::endl;
 
+    Node<K,V>*cur = head;
+        while(cur)
+        {
+            fout << "      " << (quintptr)cur;
+            fout << "[label=\"";
+            fout << "{key: " << cur->key << "|val:" << cur->value << "}";
+            fout << "\"];" << std::endl;
+            cur = cur->next;
+        }
+        fout << "\n\n";
+
+        cur = head;
+
+        fout << (quintptr)cur;
+        cur = cur->next;
+        while(cur)
+        {
+            fout << "->" << (quintptr)cur << ";\n";
+            fout << (quintptr)cur;
+            cur = cur->next;
+        }
+        fout << "->end;\n";
+    fout << "}";
 }
 
 template<typename K, typename V>
-StructureRepresentor<K, V> *List<K, V>::Union(const StructureRepresentor<K, V> &s)
+StructureRepresentor<K, V> *List<K, V>::Union( StructureRepresentor<K, V> *s)
+{
+    vector<pair<K,V>>p1 = this->getKeys();
+    vector<pair<K,V>>p2 = s->getKeys();
+    StructureRepresentor<K,V>*sr = new List<K,V>;
+    for(pair<K,V>p:p1)
+    {
+        sr->insert(p.first,p.second);
+    }
+    for(pair<K,V>p:p2)
+    {
+        sr->insert(p.first,p.second);
+    }
+    return sr;
+}
+
+template<typename K, typename V>
+StructureRepresentor<K, V> *List<K, V>::Intersection( StructureRepresentor<K, V> *s)
 {
 
 }
 
 template<typename K, typename V>
-StructureRepresentor<K, V> *List<K, V>::Intersection(const StructureRepresentor<K, V> &s)
+StructureRepresentor<K, V> *List<K, V>::SymDiff( StructureRepresentor<K, V> *s)
 {
 
 }
 
 template<typename K, typename V>
-StructureRepresentor<K, V> *List<K, V>::SymDiff(const StructureRepresentor<K, V> &s)
+StructureRepresentor<K, V> *List<K, V>::Diff( StructureRepresentor<K, V> *s)
 {
 
 }
 
 template<typename K, typename V>
-StructureRepresentor<K, V> *List<K, V>::Diff(const StructureRepresentor<K, V> &s)
+vector<pair<K,V>> List<K, V>::getKeys()
 {
-
-}
-
-template<typename K, typename V>
-vector<K> List<K, V>::getKeys()
-{
-
+    vector<pair<K,V>>key_val;
+    Node<K,V>*cur = head;
+    while(cur)
+    {
+        key_val.emplace_back(cur->key,cur->value);
+        cur = cur->next;
+    }
+    return key_val;
 }
 
 template<typename K, typename V>

@@ -5,6 +5,7 @@
 #include "drawer.h"
 #include <fstream>
 #include <vector>
+#include "setoperationsview.h"
 
 using std::vector;
 
@@ -23,21 +24,25 @@ public:
 
     void drawStructure(int struct_index,QGraphicsView *view);
 
+    void drawStructure(StructureRepresentor<K,V>*s,QGraphicsView *view);
+
     void randomInsert();
 
     V find(K key);
 
-    StructureRepresentor<K,V>* Union(const StructureRepresentor<K,V>&s);
+    void Union();
 
-    StructureRepresentor<K,V>* Intersection(const StructureRepresentor<K,V>&s);
+    void Intersection();
 
-    StructureRepresentor<K,V>* SymDiff(const StructureRepresentor<K,V>&s);
+    void SymDiff();
 
-    StructureRepresentor<K,V>* Diff(const StructureRepresentor<K,V>&s);
+    void Diff();
 
     vector<K> getKeys();
 
     void sort();
+
+    void clear();
 
 
 private:
@@ -46,14 +51,18 @@ private:
     StructureRepresentor<K,V>*getStructureFromIndex(int struct_index);
 
     Drawer<K,V>*drawer;
+
+    SetOperationsView*sView = nullptr;
 };
 
 template <typename K,typename V>
 CoreFacade<K,V>::CoreFacade()
 {
-    s1 = new StlList<int,int>();
-    s2 = new StlList<int,int>();
+    s1 = new List<int,int>();
+    s2 = new List<int,int>();
     drawer = new Drawer<K,V>();
+
+    sView = new SetOperationsView;
 }
 
 template <typename K,typename V>
@@ -93,6 +102,29 @@ void CoreFacade<K,V>::drawStructure(int struct_index, QGraphicsView *view)
 }
 
 template<typename K, typename V>
+void CoreFacade<K,V>::drawStructure(StructureRepresentor<K, V> *s, QGraphicsView *view)
+{
+    QImage image = drawer->createPngImage(s);
+    QGraphicsPixmapItem *item = new QGraphicsPixmapItem( QPixmap::fromImage( image ) );
+    QGraphicsScene* scene;
+    if(view->scene()==nullptr)
+    {
+        scene = new QGraphicsScene;
+    }
+    else
+    {
+        scene = view->scene();
+        scene->removeItem(scene->items().at(0));
+    }
+    view->setScene(scene);
+    //view->fitInView(image.rect(),Qt::KeepAspectRatio);
+    scene->addItem( item );
+    item->setPos( 0, 0 );
+    sView->show();
+    view->fitInView(image.rect(),Qt::KeepAspectRatio);
+}
+
+template<typename K, typename V>
 void CoreFacade<K,V>::randomInsert()
 {
 
@@ -105,25 +137,26 @@ V CoreFacade<K,V>::find(K key)
 }
 
 template<typename K, typename V>
-StructureRepresentor<K, V>* CoreFacade<K,V>::Union(const StructureRepresentor<K, V> &s)
+void CoreFacade<K,V>::Union()
+{
+   StructureRepresentor<K, V>*U = s1->Union(s2);
+   drawStructure(U,sView->getView());
+}
+
+template<typename K, typename V>
+void CoreFacade<K,V>::Intersection()
 {
 
 }
 
 template<typename K, typename V>
-StructureRepresentor<K, V>* CoreFacade<K,V>::Intersection(const StructureRepresentor<K, V> &s)
+void CoreFacade<K,V>::SymDiff()
 {
 
 }
 
 template<typename K, typename V>
-StructureRepresentor<K, V>* CoreFacade<K,V>::SymDiff(const StructureRepresentor<K, V> &s)
-{
-
-}
-
-template<typename K, typename V>
-StructureRepresentor<K, V>* CoreFacade<K,V>::Diff(const StructureRepresentor<K, V> &s)
+void CoreFacade<K,V>::Diff()
 {
 
 }
@@ -136,6 +169,12 @@ vector<K> CoreFacade<K,V>::getKeys()
 
 template<typename K, typename V>
 void CoreFacade<K,V>::sort()
+{
+
+}
+
+template<typename K, typename V>
+void CoreFacade<K,V>::clear()
 {
 
 }

@@ -2,8 +2,8 @@
 #include "ui_mainwindow.h"
 #include <QInputDialog>
 #include <QMessageBox>
-#include <splaytree.h>
-CoreFacade<int,int>*core = new CoreFacade<int,int>;
+#include <osrbtree.h>
+#include "insertdialog.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -11,11 +11,15 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     //core = new CoreFacade;
-    //ui->view2->setFocus();
+
     ui->view1->installEventFilter(this);
     ui->view2->installEventFilter(this);
 
     currentStructureIndex = 1;
+
+    insertWindow = new InsertDialog(this);
+
+    core = new CoreFacade<int,int>;
 }
 
 
@@ -58,9 +62,8 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
 }
 
 void MainWindow::on_insertBTN_clicked()
-{    
-    int key = QInputDialog::getInt(this,"Enter Key","Enter Key");
-    int value = QInputDialog::getInt(this,"Enter Value","Enter Value");
+{
+    //insertWindow->open();
     QGraphicsView*view;
     if(currentStructureIndex == 1)
     {
@@ -69,8 +72,25 @@ void MainWindow::on_insertBTN_clicked()
     else {
         view = ui->view2;
     }
+    int key = QInputDialog::getInt(this,"Get key","Enter key");
+    int value = QInputDialog::getInt(this,"Get value","Enter value");
     core->insert(key,value,currentStructureIndex);
     core->drawStructure(currentStructureIndex,view);
+
+}
+
+void MainWindow::Insert(const QString &key, const QString &value)
+{
+    //QGraphicsView*view;
+    //if(currentStructureIndex == 1)
+    //{
+    //    view = ui->view1;
+    //}
+    //else {
+    //    view = ui->view2;
+    //}
+    //core->insert(key.toInt(),value.toInt(),currentStructureIndex);
+    //core->drawStructure(currentStructureIndex,view);
 }
 
 void MainWindow::on_removeBTN_clicked()
@@ -110,7 +130,7 @@ void MainWindow::on_getListBTN_clicked()
 
 void MainWindow::on_union_2_clicked()
 {
-
+    core->Union();
 }
 
 void MainWindow::on_intersectionBTN_clicked()
@@ -132,3 +152,5 @@ void MainWindow::on_sortBTN_clicked()
 {
 
 }
+
+
