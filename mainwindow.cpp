@@ -10,8 +10,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->statusBar->showMessage("Structure type is : Custom list");
-
     ui->view1->installEventFilter(this);
     ui->view2->installEventFilter(this);
 
@@ -19,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     insertWindow = new InsertDialog(this);
 
-    core = new CoreFacade<int,int>(ui->view1,ui->view2);
+    core = new CoreFacade<int,int>(ui->view1,ui->view2,ui->statusBar);
 
     connect(ui->actionStlMap, &QAction::triggered, this, &MainWindow::changeStructure);
     connect(ui->actionStlList_2, &QAction::triggered, this, &MainWindow::changeStructure);
@@ -88,7 +86,7 @@ void MainWindow::on_removeBTN_clicked()
 
 void MainWindow::on_findBTN_clicked()
 {
-    int key = QInputDialog::getInt(this,"Enter Key","Enter Key");
+    int key = QInputDialog::getInt(this,"Key","Enter Key");
 
     auto value = core->find(currentStructureIndex,key);
 
@@ -98,7 +96,8 @@ void MainWindow::on_findBTN_clicked()
 
 void MainWindow::on_randomInsertBTN_clicked()
 {
-
+    int amount = QInputDialog::getInt(this,"Amount","Enter amount");
+    core->randomInsert(currentStructureIndex,amount);
 }
 
 void MainWindow::on_getListBTN_clicked()
@@ -141,9 +140,10 @@ void MainWindow::changeStructure()
     QObject *object = sender();
     QAction *action = qobject_cast<QAction*>(object);
     core->changeStructure(action->iconText());
-    ui->statusBar->showMessage("Structure type is : " + action->iconText());
+    //ui->statusBar->showMessage("Structure type is : " + action->iconText());
     if(action->iconText()=="Custom List" || action->iconText()=="StlList")
         ui->sortBTN->setVisible(true);
     else
         ui->sortBTN->setVisible(false);
 }
+

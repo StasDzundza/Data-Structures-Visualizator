@@ -30,8 +30,7 @@ SOURCES += \
     officials.cpp \
     insertdialog.cpp \
     setoperationsview.cpp \
-    structurefactory.cpp \
-    randomgenerator.cpp
+    structurefactory.cpp
 
 HEADERS += \
         mainwindow.h \

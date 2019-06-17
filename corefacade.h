@@ -7,6 +7,10 @@
 #include <vector>
 #include "setoperationsview.h"
 #include "structurefactory.h"
+#include "randomgenerator.h"
+#include <QStatusBar>
+#include <chrono>
+#include <QDebug>
 
 using std::vector;
 
@@ -19,17 +23,17 @@ class CoreFacade
 public:
     CoreFacade();
 
-    CoreFacade(QGraphicsView*v1,QGraphicsView*v2);
+    CoreFacade(QGraphicsView*v1,QGraphicsView*v2,QStatusBar*bar);
 
     void insert(K key,V value, int structureIndex);
 
-    bool remove(K key, int structureIndex);
+    void remove(K key, int structureIndex);
 
     void drawStructure(int struct_index);
 
     void drawStructure(StructureRepresentor<K,V>*s,QGraphicsView*view);
 
-    void randomInsert();
+    void randomInsert(int struct_index,int amount);
 
     V find(int structure_index,K key);
 
@@ -49,6 +53,8 @@ public:
 
     void changeStructure(const QString &iconText);
 
+    void setTimePassed(const QString&time);
+
 private:
     StructureRepresentor<K,V>*s1,*s2;
 
@@ -65,6 +71,10 @@ private:
     QGraphicsView*view1;
 
     QGraphicsView*view2;
+
+    QStatusBar*mw_bar;
+
+    RandomGenerator<K,V>*random;
 };
 
 template <typename K,typename V>
@@ -78,27 +88,38 @@ CoreFacade<K,V>::CoreFacade()
     sView = new SetOperationsView;
 
     factory = StructureFactory::getInstance();
+
+    random = new RandomGenerator<K,V>;
 }
 
 template <typename K,typename V>
-CoreFacade<K,V>::CoreFacade(QGraphicsView*v1,QGraphicsView*v2):CoreFacade<K,V>()
+CoreFacade<K,V>::CoreFacade(QGraphicsView*v1,QGraphicsView*v2,QStatusBar*bar):CoreFacade<K,V>()
 {
     view1 = v1;
     view2 = v2;
+    mw_bar = bar;
 }
 
 template <typename K,typename V>
 void CoreFacade<K,V>::insert(K key, V value, int struct_index)
 {
     StructureRepresentor<K,V>*s = getStructureFromIndex(struct_index);
+    auto begin = std::chrono::steady_clock::now();
     s->insert(key,value);
+    auto end = std::chrono::steady_clock::now();
+    auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    setTimePassed(QString::number(elapsed_ms.count()));
 }
 
 template<typename K, typename V>
-bool CoreFacade<K,V>::remove(K key, int structureIndex)
+void CoreFacade<K,V>::remove(K key, int structureIndex)
 {
     StructureRepresentor<K,V>*s = getStructureFromIndex(structureIndex);
+    auto begin = std::chrono::steady_clock::now();
     s->remove(key);
+    auto end = std::chrono::steady_clock::now();
+    auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    setTimePassed(QString::number(elapsed_ms.count()));
 }
 
 template <typename K,typename V>
@@ -147,43 +168,69 @@ void CoreFacade<K,V>::drawStructure(StructureRepresentor<K, V> *s,QGraphicsView*
 }
 
 template<typename K, typename V>
-void CoreFacade<K,V>::randomInsert()
+void CoreFacade<K,V>::randomInsert(int struct_index,int amount)
 {
-
+    StructureRepresentor<K,V>*s = getStructureFromIndex(struct_index);
+    auto begin = std::chrono::steady_clock::now();
+    random->fillStructureInt(s,amount);
+    auto end = std::chrono::steady_clock::now();
+    auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    setTimePassed(QString::number(elapsed_ms.count()));
+    drawStructure(struct_index);
 }
 
 template<typename K, typename V>
 V CoreFacade<K,V>::find(int structure_index,K key)
 {
     StructureRepresentor<K,V>*s = getStructureFromIndex(structure_index);
+    auto begin = std::chrono::steady_clock::now();
+    auto end = std::chrono::steady_clock::now();
+    auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    setTimePassed(QString::number(elapsed_ms.count()));
     return s->find(key);
 }
 
 template<typename K, typename V>
 void CoreFacade<K,V>::Union()
 {
+   auto begin = std::chrono::steady_clock::now();
    StructureRepresentor<K, V>*U = s1->Union(s2);
+   auto end = std::chrono::steady_clock::now();
+   auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+   setTimePassed(QString::number(elapsed_ms.count()));
    drawStructure(U,sView->getView());
 }
 
 template<typename K, typename V>
 void CoreFacade<K,V>::Intersection()
 {
+    auto begin = std::chrono::steady_clock::now();
     StructureRepresentor<K, V>*U = s1->Intersection(s2);
+    auto end = std::chrono::steady_clock::now();
+    auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    setTimePassed(QString::number(elapsed_ms.count()));
     drawStructure(U,sView->getView());
 }
 
 template<typename K, typename V>
 void CoreFacade<K,V>::SymDiff()
 {
+    auto begin = std::chrono::steady_clock::now();
     StructureRepresentor<K, V>*U = s1->SymDiff(s2);
+    auto end = std::chrono::steady_clock::now();
+    auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    setTimePassed(QString::number(elapsed_ms.count()));
     drawStructure(U,sView->getView());
 }
 
 template<typename K, typename V>
 void CoreFacade<K,V>::Diff()
 {
+    auto begin = std::chrono::steady_clock::now();
     StructureRepresentor<K, V>*U = s1->Diff(s2);
+    auto end = std::chrono::steady_clock::now();
+    auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    setTimePassed(QString::number(elapsed_ms.count()));
     drawStructure(U,sView->getView());
 }
 
@@ -192,9 +239,13 @@ void CoreFacade<K,V>::getKeys(int structure_index)
 {
     StructureRepresentor<K, V>*keys = new StlList<K,V>;
     StructureRepresentor<K,V>*s = getStructureFromIndex(structure_index);
+    auto begin = std::chrono::steady_clock::now();
     vector<pair<K,V>>key_val = s->getKeys();
     for(pair<K,V>p:key_val)
         keys->insert(p.first,p.second);
+    auto end = std::chrono::steady_clock::now();
+    auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    setTimePassed(QString::number(elapsed_ms.count()));
     drawStructure(keys,sView->getView());
 }
 
@@ -208,7 +259,11 @@ template<typename K, typename V>
 void CoreFacade<K,V>::clear(int struct_index)
 {
     StructureRepresentor<K,V>*s = getStructureFromIndex(struct_index);
+    auto begin = std::chrono::steady_clock::now();
     s->clear();
+    auto end = std::chrono::steady_clock::now();
+    auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    setTimePassed(QString::number(elapsed_ms.count()));
     QGraphicsView*view = getViewFromIndex(struct_index);
     if(view->scene()!=nullptr)
     {
@@ -225,6 +280,12 @@ void CoreFacade<K,V>::changeStructure(const QString &iconText)
     delete s1,s2;
     s1 = factory->createStructure(iconText);
     s2 = factory->createStructure(iconText);
+}
+
+template<typename K, typename V>
+void CoreFacade<K,V>::setTimePassed(const QString &time)
+{
+    mw_bar->showMessage("Time Passed " + time + " nanoseconds.");
 }
 
 template <typename K,typename V>

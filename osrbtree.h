@@ -19,7 +19,7 @@ class OSTreeRB:public StructureRepresentor<Key,T>
 private:
     struct Node
     {
-        Node() :color{ black }, left{ nullptr }, right{ nullptr }, parent{ nullptr }, size{ 0 } {};
+        Node() :color{ black }, left{ nullptr }, right{ nullptr }, parent{ nullptr }, size{ 0 } {}
         pair<Key, T> value;
         Node* left;
         Node* right;
