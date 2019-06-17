@@ -143,3 +143,16 @@ void MainWindow::on_sortBTN_clicked()
 }
 
 
+
+void MainWindow::on_clearBTN_clicked()
+{
+    QGraphicsView*view;
+    if(currentStructureIndex == 1)
+    {
+        view = ui->view1;
+    }
+    else {
+        view = ui->view2;
+    }
+    core->clear(currentStructureIndex,view);
+}

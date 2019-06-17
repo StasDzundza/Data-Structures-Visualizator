@@ -43,6 +43,8 @@ private slots:
 
 
 
+    void on_clearBTN_clicked();
+
 private:
     Ui::MainWindow *ui;
     //CoreFacade*core;

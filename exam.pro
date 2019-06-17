@@ -47,7 +47,8 @@ HEADERS += \
     splaytree.h \
     insertdialog.h \
     osrbtree.h \
-    setoperationsview.h
+    setoperationsview.h \
+    structurefactory.h
 
 FORMS += \
         mainwindow.ui \

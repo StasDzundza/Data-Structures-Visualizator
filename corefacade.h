@@ -42,8 +42,9 @@ public:
 
     void sort();
 
-    void clear();
+    void clear(int struct_index,QGraphicsView *view);
 
+    void changeStructure(const QString &iconText);
 
 private:
     StructureRepresentor<K,V>*s1,*s2;
@@ -178,7 +179,16 @@ void CoreFacade<K,V>::sort()
 }
 
 template<typename K, typename V>
-void CoreFacade<K,V>::clear()
+void CoreFacade<K,V>::clear(int struct_index,QGraphicsView *view)
+{
+    StructureRepresentor<K,V>*s = getStructureFromIndex(struct_index);
+    s->clear();
+    view->scene()->clear();
+    view->scene()->deleteLater();
+}
+
+template<typename K, typename V>
+void CoreFacade<K,V>::changeStructure(const QString &iconText)
 {
 
 }
