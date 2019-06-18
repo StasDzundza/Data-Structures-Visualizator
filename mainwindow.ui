@@ -251,7 +251,14 @@
     </widget>
     <addaction name="menuNew"/>
    </widget>
+   <widget class="QMenu" name="menuSettings">
+    <property name="title">
+     <string>Settings</string>
+    </property>
+    <addaction name="actionSet_path_to_graphviz"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuSettings"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionStlList_2">
@@ -287,6 +294,11 @@
   <action name="actionForward_list">
    <property name="text">
     <string>Custom List</string>
+   </property>
+  </action>
+  <action name="actionSet_path_to_graphviz">
+   <property name="text">
+    <string>Set path to graphviz</string>
    </property>
   </action>
  </widget>

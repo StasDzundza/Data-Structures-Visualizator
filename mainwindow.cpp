@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     insertWindow = new InsertDialog(this);
 
-    core = new CoreFacade<int,int>(ui->view1,ui->view2,ui->statusBar);
+    core = new CoreFacade<int,int>(ui->view1,ui->view2,ui->statusBar,this);
 
     connect(ui->actionStlMap, &QAction::triggered, this, &MainWindow::changeStructure);
     connect(ui->actionStlList_2, &QAction::triggered, this, &MainWindow::changeStructure);
@@ -61,8 +61,8 @@ void MainWindow::wheelEvent(QWheelEvent *event)
         // Zooming out
          view->scale(1.0 / scaleFactor, 1.0 / scaleFactor);
     }
-        event->accept();
-    }
+    event->accept();
+}
 
 bool MainWindow::eventFilter(QObject *object, QEvent *event)
 {
@@ -178,3 +178,8 @@ void MainWindow::changeStructure()
         ui->sortBTN->setVisible(false);
 }
 
+
+void MainWindow::on_actionSet_path_to_graphviz_triggered()
+{
+    core->setPathToGraphvizDotFile();
+}

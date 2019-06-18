@@ -49,6 +49,8 @@ private slots:
 
     void changeStructure();
 
+    void on_actionSet_path_to_graphviz_triggered();
+
 private:
     Ui::MainWindow *ui;
     //CoreFacade*core;

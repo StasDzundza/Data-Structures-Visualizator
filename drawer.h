@@ -9,6 +9,8 @@
 #include <QGraphicsScene>
 #include <QDebug>
 #include "structurerepresentor.h"
+#include <QTextStream>
+#include <QFile>
 
 using std::string;
 using std::map;
@@ -21,32 +23,37 @@ public:
     Drawer();
 
     QImage createPngImage(StructureRepresentor<K,V>*s);
+
+    void setPathToGraphvizDotFile(QString graphVizPath);
 private:
-    map<int,std::string> path;
+     QString graphVizPath;
 };
 
 template<typename K,typename V>
 Drawer<K,V>::Drawer()
 {
-    path = {{0,"..\\DataStructures Visualizator\\Output\\SplayTree\\"},{1,"..\\DataStructures Visualizator\\Output\\RedBlack\\"},{2,"..\\DataStructures Visualizator\\Output\\LinkedList\\"},{3,"..\\DataStructures Visualizator\\Output\\StlList\\"}};
+    graphVizPath = "..\\DataStructuresVisualizator\\graphviz\\bin\\dot.exe";
 }
 
 template<typename K,typename V>
 QImage Drawer<K,V>::createPngImage(StructureRepresentor<K,V> *s)
 {
-    string pathToFile ="";// path[s->getType()];
+    string pathToFile ="";
     string pathToImage= pathToFile;
     pathToFile+="structure.dot";
     pathToImage+="structure.png";
-
-    qDebug()<<pathToFile.c_str();
-    qDebug()<<pathToImage.c_str();
     s->writeDotFile(pathToFile.c_str());
-    string commanStr = "";
-    commanStr += "..\\DataStructuresVisualizator\\graphviz\\bin\\dot.exe -Tpng " + pathToFile + " -o " + pathToImage;
-    system(commanStr.c_str());
+    QString cmdCommand = QString("%1 -Tpng %2 -o %3").arg(graphVizPath.toStdString().c_str(),pathToFile.c_str(),pathToImage.c_str());
+    qDebug()<<cmdCommand;
+    system(cmdCommand.toStdString().c_str());
     QImage image(pathToImage.c_str());
 
     return image;
+}
+
+template<typename K, typename V>
+void Drawer<K,V>::setPathToGraphvizDotFile(QString graphVizPath)
+{
+    this->graphVizPath = graphVizPath;
 }
 #endif // DRAWER_H

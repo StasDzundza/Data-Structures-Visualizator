@@ -4,13 +4,16 @@
 #include <QGraphicsView>
 #include "drawer.h"
 #include <fstream>
-#include <vector>
 #include "setoperationsview.h"
 #include "structurefactory.h"
 #include "randomgenerator.h"
 #include <QStatusBar>
 #include <chrono>
 #include <QDebug>
+#include <QFileDialog>
+#include <QObject>
+#include <QWidget>
+#include <QMessageBox>
 
 using std::vector;
 
@@ -23,7 +26,7 @@ class CoreFacade
 public:
     CoreFacade();
 
-    CoreFacade(QGraphicsView*v1,QGraphicsView*v2,QStatusBar*bar);
+    CoreFacade(QGraphicsView*v1,QGraphicsView*v2,QStatusBar*bar,QWidget*parent);
 
     void insert(K key,V value, int structureIndex);
 
@@ -55,6 +58,8 @@ public:
 
     void setTimePassed(const QString&time);
 
+    void setPathToGraphvizDotFile();
+
 private:
     StructureRepresentor<K,V>*s1,*s2;
 
@@ -75,6 +80,8 @@ private:
     QStatusBar*mw_bar;
 
     RandomGenerator<K,V>*random;
+
+    QWidget*parent;
 };
 
 template <typename K,typename V>
@@ -90,14 +97,33 @@ CoreFacade<K,V>::CoreFacade()
     factory = StructureFactory::getInstance();
 
     random = new RandomGenerator<K,V>;
+
 }
 
 template <typename K,typename V>
-CoreFacade<K,V>::CoreFacade(QGraphicsView*v1,QGraphicsView*v2,QStatusBar*bar):CoreFacade<K,V>()
+CoreFacade<K,V>::CoreFacade(QGraphicsView*v1,QGraphicsView*v2,QStatusBar*bar,QWidget*parent):CoreFacade<K,V>()
 {
     view1 = v1;
     view2 = v2;
     mw_bar = bar;
+    this->parent = parent;
+
+    QFile file("GraphViz_Path.txt");
+    if(!file.exists())
+    {
+        QMessageBox::warning(parent,"Enter Path To GraphViz","You should choose path to graphviz dot.exe file. It should be in graphviz\\bin\\ folder.");
+        this->setPathToGraphvizDotFile();
+    }
+    else if((file.open(QIODevice::ReadOnly)))
+    {
+        QString str="";
+        while(!file.atEnd())
+        {
+            str+=file.readLine();
+        }
+        file.close();
+        drawer->setPathToGraphvizDotFile(str);
+    }
 }
 
 template <typename K,typename V>
@@ -297,6 +323,22 @@ template<typename K, typename V>
 void CoreFacade<K,V>::setTimePassed(const QString &time)
 {
     mw_bar->showMessage("Time Passed " + time + " nanoseconds.");
+}
+
+template<typename K, typename V>
+void CoreFacade<K,V>::setPathToGraphvizDotFile()
+{
+    QString path = QFileDialog::getOpenFileName(parent,QObject::tr("Open dot.exe file"),
+                                                            "/home",
+                                                            QObject::tr("Images (*.exe)"));
+
+    drawer->setPathToGraphvizDotFile(path);
+
+    QFile fileOut("GraphViz_Path.txt");
+    fileOut.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream writeStream(&fileOut);
+    writeStream << path;
+    fileOut.close();
 }
 
 template <typename K,typename V>
