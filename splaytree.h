@@ -31,7 +31,7 @@ class Splay_Tree : public StructureRepresentor<T,_Val>
     using Node = SplayNode<T,_Val>;
 private:
 
-    bool isEmpty(){return tree == nullptr; }
+
     void bst_print_dot_aux(Node* node, ofstream& stream);
 
     Node *rightRotate(Node *y);
@@ -64,6 +64,7 @@ public:
     StructureRepresentor<T,_Val>* Diff( StructureRepresentor<T,_Val>*s)override;
     vector<pair<T,_Val>> getKeys()override;
     void sort()override;
+    bool isEmpty()override{return tree == nullptr; }
 };
 
 #include "splaytree.h"

@@ -26,6 +26,7 @@ public:
     vector<pair<K,V>> getKeys()override;
     void sort()override;
     void clear()override;
+    bool isEmpty()override;
 private:
     vector<pair<K,V>>m_vector;
 };
@@ -176,5 +177,11 @@ template<typename K, typename V>
 void StlVector<K,V>::clear()
 {
     m_vector.clear();
+}
+
+template<typename K, typename V>
+bool StlVector<K,V>::isEmpty()
+{
+    m_vector.empty();
 }
 #endif // STLVECTOR_H

@@ -171,12 +171,18 @@ template<typename K, typename V>
 void CoreFacade<K,V>::randomInsert(int struct_index,int amount)
 {
     StructureRepresentor<K,V>*s = getStructureFromIndex(struct_index);
-    auto begin = std::chrono::steady_clock::now();
-    random->fillStructureInt(s,amount);
-    auto end = std::chrono::steady_clock::now();
-    auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
-    setTimePassed(QString::number(elapsed_ms.count()));
-    drawStructure(struct_index);
+    if(s->isEmpty())
+    {
+        auto begin = std::chrono::steady_clock::now();
+        random->fillStructureInt(s,amount);
+        auto end = std::chrono::steady_clock::now();
+        auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+        setTimePassed(QString::number(elapsed_ms.count()));
+        drawStructure(struct_index);
+    }
+    else {
+        mw_bar->showMessage("Structure should be empty for random filling");
+    }
 }
 
 template<typename K, typename V>

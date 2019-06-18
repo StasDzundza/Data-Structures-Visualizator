@@ -29,6 +29,7 @@ public:
     vector<pair<K,V>> getKeys()override;
     void sort()override;
     void clear()override;
+    bool isEmpty()override;
 private:
     list<pair<int,int>>list;
 };
@@ -178,5 +179,11 @@ template<typename K, typename V>
 void StlList<K,V>::clear()
 {
     list.clear();
+}
+
+template<typename K, typename V>
+bool StlList<K,V>::isEmpty()
+{
+    return list.empty();
 }
 #endif // STLLIST_H

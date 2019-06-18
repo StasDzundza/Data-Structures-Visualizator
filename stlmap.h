@@ -23,6 +23,7 @@ public:
     StructureRepresentor<K,V>* Diff(StructureRepresentor<K,V>*s)override;
     vector<pair<K,V>> getKeys()override;
     void sort()override;
+    bool isEmpty()override;
 private:
     std::map<K,V> m_map;
 };
@@ -161,5 +162,11 @@ template<typename K, typename V>
 void StlMap<K,V>::sort()
 {
     m_map.clear();
+}
+
+template<typename K, typename V>
+bool StlMap<K,V>::isEmpty()
+{
+    return m_map.empty();
 }
 #endif // STLMAP_H

@@ -4,6 +4,7 @@
 #include "structurerepresentor.h"
 #include <vector>
 #include <QRandomGenerator>
+#include <QDebug>
 
 template<typename K, typename V>
 class RandomGenerator
@@ -12,6 +13,8 @@ public:
     RandomGenerator();
 
     void fillStructureInt(StructureRepresentor<K,V>*s,int amount);
+
+    void fillVector(std::vector<int>&vec,int amount);
 
 private:
     QRandomGenerator*random;
@@ -26,12 +29,22 @@ RandomGenerator<K,V>::RandomGenerator()
 template<typename K, typename V>
 void RandomGenerator<K,V>::fillStructureInt(StructureRepresentor<K, V> *s,int amount)
 {
-    std::vector<int> keys(amount),values(amount);
-    random->generate(keys.begin(), keys.end());
-    random->generate(values.begin(), values.end());
+    std::vector<int> keys,values;
 
-    while(amount --> 0){
-        s->insert(keys[amount-1],values[amount-1]);
+    fillVector(keys,amount);
+    fillVector(values,amount);
+
+    for(int i = 0; i < amount;i++)
+        s->insert(keys[i],values[i]);
+}
+
+template<typename K, typename V>
+void RandomGenerator<K,V>::fillVector(std::vector<int> &vec,int amount)
+{
+    for(int i = 0; i < amount; i++)
+    {
+        qDebug()<<QRandomGenerator::global()->bounded(-200,200);
+        vec.push_back(QRandomGenerator::global()->bounded(-200,200));
     }
 }
 #endif // RANDOMGENERATOR_H

@@ -41,7 +41,7 @@ private:
     void OS_Select(unsigned);
     void OS_Rank(Key key);
     Node* Find(Key value);
-    bool isEmpty(){return root == null_node;}
+    bool isEmpty()override{return root == null_node;}
 
 public:
 

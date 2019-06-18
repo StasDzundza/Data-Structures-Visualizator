@@ -22,6 +22,7 @@ public:
     vector<pair<K,V>> getKeys()override;
     void sort()override;
     void clear()override;
+    bool isEmpty()override;
 private:
     void pop_front();
 
@@ -70,6 +71,12 @@ void List<K, V>::clear()
     {
         pop_front();
     }
+}
+
+template<typename K, typename V>
+bool List<K,V>::isEmpty()
+{
+    return Size == 0;
 }
 template<typename K, typename V>
 void List<K, V>::insert(K data,V value)
