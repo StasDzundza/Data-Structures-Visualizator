@@ -12,9 +12,9 @@ class RandomGenerator
 public:
     RandomGenerator();
 
-    void fillStructureInt(StructureRepresentor<K,V>*s,int amount);
+    void fillStructureInt(StructureRepresentor<K,V>*s,const int& amount);
 
-    void fillVector(std::vector<int>&vec,int amount);
+    void fillVector(std::vector<int>&vec,const int& amount);
 
 private:
     QRandomGenerator*random;
@@ -27,7 +27,7 @@ RandomGenerator<K,V>::RandomGenerator()
 }
 
 template<typename K, typename V>
-void RandomGenerator<K,V>::fillStructureInt(StructureRepresentor<K, V> *s,int amount)
+void RandomGenerator<K,V>::fillStructureInt(StructureRepresentor<K, V> *s,const int& amount)
 {
     std::vector<int> keys,values;
 
@@ -39,11 +39,10 @@ void RandomGenerator<K,V>::fillStructureInt(StructureRepresentor<K, V> *s,int am
 }
 
 template<typename K, typename V>
-void RandomGenerator<K,V>::fillVector(std::vector<int> &vec,int amount)
+void RandomGenerator<K,V>::fillVector(std::vector<int> &vec,const int& amount)
 {
     for(int i = 0; i < amount; i++)
     {
-        qDebug()<<QRandomGenerator::global()->bounded(-200,200);
         vec.push_back(QRandomGenerator::global()->bounded(-200,200));
     }
 }

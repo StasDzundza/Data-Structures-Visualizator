@@ -51,7 +51,7 @@ public:
 
     void clear(int struct_index);
 
-    void changeStructure(const QString &iconText);
+    void changeStructure(const int& struct_index,const QString &iconText);
 
     void setTimePassed(const QString&time);
 
@@ -279,13 +279,18 @@ void CoreFacade<K,V>::clear(int struct_index)
 }
 
 template<typename K, typename V>
-void CoreFacade<K,V>::changeStructure(const QString &iconText)
+void CoreFacade<K,V>::changeStructure(const int& struct_index,const QString &iconText)
 {
-    clear(1);
-    clear(2);
-    delete s1,s2;
-    s1 = factory->createStructure(iconText);
-    s2 = factory->createStructure(iconText);
+    clear(struct_index);
+    if(struct_index == 1)
+    {
+        delete s1;
+        s1 = factory->createStructure(iconText);
+    }
+    else {
+        delete s2;
+        s2 = factory->createStructure(iconText);
+    }
 }
 
 template<typename K, typename V>

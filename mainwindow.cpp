@@ -3,7 +3,7 @@
 #include <QInputDialog>
 #include <QMessageBox>
 #include "insertdialog.h"
-
+#include <QGraphicsSceneWheelEvent>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -25,6 +25,19 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionForward_list, &QAction::triggered, this, &MainWindow::changeStructure);
     connect(ui->actionSplayTree, &QAction::triggered, this, &MainWindow::changeStructure);
     connect(ui->actionRedBlack_Tree, &QAction::triggered, this, &MainWindow::changeStructure);
+
+    ui->firstTypeLbl->setText("CustomList");
+    ui->secondTypeLbl->setText("CustomList");
+
+    ui->firstTypeLbl->setEnabled(false);
+    ui->secondTypeLbl->setEnabled(false);
+
+    scaleIndex = 1;
+
+    h11 = 1.0;
+    h12 = 0  ;
+    h21 = 1.0;
+    h22 = 0  ;
 }
 
 
@@ -32,6 +45,24 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+void MainWindow::wheelEvent(QWheelEvent *event)
+{
+    QGraphicsView*view;
+    (currentStructureIndex==1)?view = ui->view1:view=ui->view2;
+    view->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+    // Scale the view / do the zoom
+    double scaleFactor = 1.15;
+    if(event->delta() > 0) {
+        // Zoom in
+        view-> scale(scaleFactor, scaleFactor);
+
+    } else {
+        // Zooming out
+         view->scale(1.0 / scaleFactor, 1.0 / scaleFactor);
+    }
+        event->accept();
+    }
 
 bool MainWindow::eventFilter(QObject *object, QEvent *event)
 {
@@ -139,8 +170,8 @@ void MainWindow::changeStructure()
 {
     QObject *object = sender();
     QAction *action = qobject_cast<QAction*>(object);
-    core->changeStructure(action->iconText());
-    //ui->statusBar->showMessage("Structure type is : " + action->iconText());
+    core->changeStructure(currentStructureIndex,action->iconText());
+    (currentStructureIndex==1)?ui->firstTypeLbl->setText(action->iconText()):ui->secondTypeLbl->setText(action->iconText());
     if(action->iconText()=="Custom List" || action->iconText()=="StlList")
         ui->sortBTN->setVisible(true);
     else
