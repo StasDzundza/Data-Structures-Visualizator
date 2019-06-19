@@ -115,7 +115,7 @@ CoreFacade<K,V>::CoreFacade(QGraphicsView*v1,QGraphicsView*v2,QStatusBar*bar,QWi
     QFile file("GraphViz_Path.txt");
     if(!file.exists())
     {
-        QMessageBox::warning(parent,"Enter Path To GraphViz","You should choose path to graphviz dot.exe file. It should be in graphviz\\bin\\ folder.");
+        QMessageBox::warning(parent,"Enter Path To GraphViz","You should set path to graphviz dot.exe file. (It should be in graphviz\\bin\\dot.exe)");
         this->setPathToGraphvizDotFile();
     }
     else if((file.open(QIODevice::ReadOnly)))
@@ -365,6 +365,7 @@ void CoreFacade<K,V>::setTimePassed(const QString &time)
 template<typename K, typename V>
 void CoreFacade<K,V>::setPathToGraphvizDotFile()
 {
+    QMessageBox::warning(parent,"Enter Path To GraphViz","You should set path to graphviz dot.exe file. (It should be in graphviz\\bin\\dot.exe)");
     QString path = QFileDialog::getOpenFileName(parent,QObject::tr("Open dot.exe file"),
                                                             "/home",
                                                             QObject::tr("Images (*.exe)"));

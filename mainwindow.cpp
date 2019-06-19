@@ -4,6 +4,9 @@
 #include <QMessageBox>
 #include "insertdialog.h"
 #include <QGraphicsSceneWheelEvent>
+#include <QUrl>
+#include <QDesktopServices>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -215,4 +218,9 @@ void MainWindow::on_actionSet_path_to_graphviz_triggered()
 void MainWindow::on_sortValues_clicked()
 {
     core->sortByValue(currentStructureIndex);
+}
+
+void MainWindow::on_actionDownload_triggered()
+{
+    QDesktopServices::openUrl ( QUrl("https://graphviz.gitlab.io/_pages/Download/Download_windows.html") );
 }

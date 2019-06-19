@@ -264,8 +264,15 @@
     </property>
     <addaction name="actionSet_path_to_graphviz"/>
    </widget>
+   <widget class="QMenu" name="menuDownload_Graphviz">
+    <property name="title">
+     <string>Download Graphviz</string>
+    </property>
+    <addaction name="actionDownload"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuSettings"/>
+   <addaction name="menuDownload_Graphviz"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionStlList_2">
@@ -306,6 +313,11 @@
   <action name="actionSet_path_to_graphviz">
    <property name="text">
     <string>Set path to graphviz</string>
+   </property>
+  </action>
+  <action name="actionDownload">
+   <property name="text">
+    <string>Download</string>
    </property>
   </action>
  </widget>

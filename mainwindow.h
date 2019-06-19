@@ -53,6 +53,8 @@ private slots:
 
     void on_sortValues_clicked();
 
+    void on_actionDownload_triggered();
+
 private:
     Ui::MainWindow *ui;
     int currentStructureIndex;
