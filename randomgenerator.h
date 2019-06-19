@@ -43,7 +43,7 @@ void RandomGenerator<K,V>::fillVector(std::vector<int> &vec,const int& amount)
 {
     for(int i = 0; i < amount; i++)
     {
-        vec.push_back(QRandomGenerator::global()->bounded(-200,200));
+        vec.push_back(QRandomGenerator::global()->bounded(-500,500));
     }
 }
 #endif // RANDOMGENERATOR_H

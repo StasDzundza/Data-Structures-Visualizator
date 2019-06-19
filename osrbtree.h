@@ -606,7 +606,9 @@ void OSTreeRB<Key,T>::clear()
             if (temp->right != nullptr)
                 s.push(temp->right);
             delete temp;
+            temp = null_node;
         }
+        root == null_node;
 }
 
 #endif // OSRBTREE_H
