@@ -42,13 +42,13 @@ public:
 
     V find(const int& structure_index,const K& key);
 
-    void Union();
+    void Union(const int& struct_index);
 
-    void Intersection();
+    void Intersection(const int& struct_index);
 
-    void SymDiff();
+    void SymDiff(const int& struct_index);
 
-    void Diff();
+    void Diff(const int& struct_index);
 
     void getKeys(const int& structure_index);
 
@@ -234,49 +234,53 @@ V CoreFacade<K,V>::find(const int& structure_index,const K& key)
 }
 
 template<typename K, typename V>
-void CoreFacade<K,V>::Union()
+void CoreFacade<K,V>::Union(const int& struct_index)
 {
    auto begin = std::chrono::steady_clock::now();
-   StructureRepresentor<K, V>*U = s1->Union(s2);
+   StructureRepresentor<K, V>*U = (struct_index==1)?s1->Union(s2):s2->Union(s1);
    auto end = std::chrono::steady_clock::now();
    auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
    setTimePassed(QString::number(elapsed_ms.count()));
+   if(!U->isEmpty())
    drawStructure(U,sView->getView());
    delete U;
 }
 
 template<typename K, typename V>
-void CoreFacade<K,V>::Intersection()
+void CoreFacade<K,V>::Intersection(const int& struct_index)
 {
     auto begin = std::chrono::steady_clock::now();
-    StructureRepresentor<K, V>*I = s1->Intersection(s2);
+    StructureRepresentor<K, V>*I = (struct_index==1)?s1->Intersection(s2):s2->Intersection(s1);
     auto end = std::chrono::steady_clock::now();
     auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     setTimePassed(QString::number(elapsed_ms.count()));
+    if(!I->isEmpty())
     drawStructure(I,sView->getView());
     delete I;
 }
 
 template<typename K, typename V>
-void CoreFacade<K,V>::SymDiff()
+void CoreFacade<K,V>::SymDiff(const int& struct_index)
 {
     auto begin = std::chrono::steady_clock::now();
-    StructureRepresentor<K, V>*SD = s1->SymDiff(s2);
+    StructureRepresentor<K, V>*SD = (struct_index==1)?s1->SymDiff(s2):s2->SymDiff(s1);
     auto end = std::chrono::steady_clock::now();
     auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     setTimePassed(QString::number(elapsed_ms.count()));
+    if(!SD->isEmpty())
     drawStructure(SD,sView->getView());
     delete SD;
 }
 
 template<typename K, typename V>
-void CoreFacade<K,V>::Diff()
+void CoreFacade<K,V>::Diff(const int& struct_index)
 {
     auto begin = std::chrono::steady_clock::now();
-    StructureRepresentor<K, V>*D = s1->Diff(s2);
+    StructureRepresentor<K, V>*D = (struct_index==1)?s1->Diff(s2):s2->Diff(s1);
     auto end = std::chrono::steady_clock::now();
     auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     setTimePassed(QString::number(elapsed_ms.count()));
+    if(!D->isEmpty())
     drawStructure(D,sView->getView());
     delete D;
 }
@@ -300,7 +304,11 @@ template<typename K, typename V>
 void CoreFacade<K,V>::sortByKey(const int& struct_index)
 {
     StructureRepresentor<K,V>*s = getStructureFromIndex(struct_index);
-
+    auto begin = std::chrono::steady_clock::now();
+    s->sortByKey();
+    auto end = std::chrono::steady_clock::now();
+    auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    setTimePassed(QString::number(elapsed_ms.count()));
     drawStructure(struct_index);
 }
 
@@ -308,7 +316,11 @@ template<typename K, typename V>
 void CoreFacade<K,V>::sortByValue(const int& struct_index)
 {
     StructureRepresentor<K,V>*s = getStructureFromIndex(struct_index);
-
+    auto begin = std::chrono::steady_clock::now();
+    s->sortByValue();
+    auto end = std::chrono::steady_clock::now();
+    auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
+    setTimePassed(QString::number(elapsed_ms.count()));
     drawStructure(struct_index);
 }
 

@@ -74,3 +74,6 @@ CMakeLists.txt.user*
 *.creator.user*
 
 # Qt Creator backups
+
+!googletest/
+!googlemock/

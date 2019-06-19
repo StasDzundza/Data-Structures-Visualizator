@@ -41,8 +41,13 @@ private:
             this->next = next;
         }
     };
+    Node<K,V>*operator[](int index);
+    void swap(Node<K,V>*n1,Node<K,V>*n2);
+
     int Size;
     Node<K, V> *head;
+
+
 };
 template<typename K, typename V>
 List<K,V>::List()
@@ -64,6 +69,34 @@ void List<K, V>::pop_front()
     head = head->next;
     delete temp;
     Size--;
+}
+
+template<typename K, typename V>
+typename List<K,V>::template Node<K, V> *List<K,V>::operator[](int index)
+{
+    if(index < Size && index >= 0)
+    {
+        Node<K,V>*cur = head;
+        for(int i = 0; i < index; i++)
+            cur = cur->next;
+        return cur;
+    }
+    else
+        return  nullptr;
+
+}
+
+template<typename K, typename V>
+void List<K,V>::swap(Node<K, V> *n1, Node<K, V> *n2)
+{
+    int a = n1->key;
+    n1->key = n2->key;
+    n2->key = a;
+
+    a = n1->value;
+    n1->value = n2->value;
+    n2->value = a;
+
 }
 template<typename K, typename V>
 void List<K, V>::clear()
@@ -251,13 +284,41 @@ vector<pair<K,V>> List<K, V>::getKeys()
 template<typename K, typename V>
 void List<K,V>::sortByKey()
 {
-
+    for(int i = 0; i < Size; i++)
+    {
+        for(int j = 1; j < Size-i;j++)
+        {
+            Node<K,V>*n1 = this->operator[](j-1);
+            Node<K,V>*n2 = this->operator[](j);
+            if(n1&&n2)
+            {
+                if(n1->key>n2->key)
+                {
+                   this->swap(n1,n2);
+                }
+            }
+        }
+    }
 }
 
 template<typename K, typename V>
 void List<K,V>::sortByValue()
 {
-
+    for(int i = 0; i < Size; i++)
+    {
+        for(int j = 1; j < Size-i;j++)
+        {
+            Node<K,V>*n1 = this->operator[](j-1);
+            Node<K,V>*n2 = this->operator[](j);
+            if(n1&&n2)
+            {
+                if(n1->value>n2->value)
+                {
+                   this->swap(n1,n2);
+                }
+            }
+        }
+    }
 }
 
 #endif // LIST_H

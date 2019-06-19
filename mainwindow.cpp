@@ -26,8 +26,8 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->actionSplayTree, &QAction::triggered, this, &MainWindow::changeStructure);
     connect(ui->actionRedBlack_Tree, &QAction::triggered, this, &MainWindow::changeStructure);
 
-    ui->firstTypeLbl->setText("CustomList");
-    ui->secondTypeLbl->setText("CustomList");
+    ui->firstTypeLbl->setText("Custom List");
+    ui->secondTypeLbl->setText("Custom List");
 
     ui->firstTypeLbl->setEnabled(false);
     ui->secondTypeLbl->setEnabled(false);
@@ -76,12 +76,32 @@ bool MainWindow::eventFilter(QObject *object, QEvent *event)
             ui->view1->setStyleSheet("QGraphicsView { border: 2px solid red }");
             ui->view2->setStyleSheet("QGraphicsView { border: none }");
             currentStructureIndex = 1;
+            if(ui->firstTypeLbl->text()=="Custom List")
+            {
+                ui->sortBTN->setVisible(true);
+                ui->sortValues->setVisible(true);
+            }
+            else
+            {
+                ui->sortBTN->setVisible(false);
+                ui->sortValues->setVisible(false);
+            }
         }
         else if (v == ui->view2)
         {
             ui->view2->setStyleSheet("QGraphicsView { border: 2px solid red }");
             ui->view1->setStyleSheet("QGraphicsView { border: none }");
             currentStructureIndex = 2;
+            if(ui->secondTypeLbl->text()=="Custom List")
+            {
+                ui->sortBTN->setVisible(true);
+                ui->sortValues->setVisible(true);
+            }
+            else
+            {
+                ui->sortBTN->setVisible(false);
+                ui->sortValues->setVisible(false);
+            }
         }
     }
 
@@ -140,22 +160,22 @@ void MainWindow::on_getListBTN_clicked()
 
 void MainWindow::on_union_2_clicked()
 {
-    core->Union();
+    core->Union(currentStructureIndex);
 }
 
 void MainWindow::on_intersectionBTN_clicked()
 {
-    core->Intersection();
+    core->Intersection(currentStructureIndex);
 }
 
 void MainWindow::on_symDiffBTN_clicked()
 {
-    core->SymDiff();
+    core->SymDiff(currentStructureIndex);
 }
 
 void MainWindow::on_diffBTN_clicked()
 {
-    core->Diff();
+    core->Diff(currentStructureIndex);
 }
 
 void MainWindow::on_sortBTN_clicked()
@@ -174,10 +194,16 @@ void MainWindow::changeStructure()
     QAction *action = qobject_cast<QAction*>(object);
     core->changeStructure(currentStructureIndex,action->iconText());
     (currentStructureIndex==1)?ui->firstTypeLbl->setText(action->iconText()):ui->secondTypeLbl->setText(action->iconText());
-    if(action->iconText()=="Custom List" || action->iconText()=="StlList")
+    if(action->iconText()=="Custom List")
+    {
         ui->sortBTN->setVisible(true);
+        ui->sortValues->setVisible(true);
+    }
     else
+    {
         ui->sortBTN->setVisible(false);
+        ui->sortValues->setVisible(false);
+    }
 }
 
 
