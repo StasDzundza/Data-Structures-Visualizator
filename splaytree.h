@@ -50,20 +50,21 @@ private:
     Node* tree;
 public:
     Splay_Tree();
-    ~Splay_Tree();
+    ~Splay_Tree()override;
 
     //bool isEmpty() override{return tree == nullptr; }
-    void insert( T key,  _Val value) override;
-    void remove( T key) override;
+    void insert(const T& key, const _Val& value) override;
+    void remove(const T& key) override;
     void clear() override;
-    _Val find(T key) override;
+    _Val find(const T& key) override;
     void writeDotFile(const char *fileName) override;
     StructureRepresentor<T,_Val>* Union( StructureRepresentor<T,_Val>*s)override;
     StructureRepresentor<T,_Val>* Intersection( StructureRepresentor<T,_Val>*s)override;
     StructureRepresentor<T,_Val>* SymDiff( StructureRepresentor<T,_Val>*s)override;
     StructureRepresentor<T,_Val>* Diff( StructureRepresentor<T,_Val>*s)override;
     vector<pair<T,_Val>> getKeys()override;
-    void sort()override;
+    void sortByKey()override;
+    void sortByValue()override;
     bool isEmpty()override{return tree == nullptr; }
 };
 
@@ -270,7 +271,7 @@ template<typename T, typename _Val> Splay_Tree<T,_Val>:: ~Splay_Tree()
     freeMemory(tree);
 }
 
-template<typename T, typename _Val> _Val Splay_Tree<T, _Val>::find(T key)
+template<typename T, typename _Val> _Val Splay_Tree<T, _Val>::find(const T& key)
 {
     tree = search(tree, key);
     if(tree->key == key)
@@ -280,11 +281,11 @@ template<typename T, typename _Val> _Val Splay_Tree<T, _Val>::find(T key)
     }
 }
 
-template<typename T, typename _Val> void Splay_Tree<T, _Val>::insert( T key, _Val value)
+template<typename T, typename _Val> void Splay_Tree<T, _Val>::insert(const T& key,const _Val& value)
 {
     tree = insert(tree, std::make_pair(key,value));
 }
-template<typename T, typename _Val> void Splay_Tree<T, _Val>::remove( T key)
+template<typename T, typename _Val> void Splay_Tree<T, _Val>::remove(const T& key)
 {
     tree = delete_key(tree, key);
 }
@@ -351,6 +352,7 @@ StructureRepresentor<T,_Val> *Splay_Tree<T,_Val>::SymDiff( StructureRepresentor<
     StructureRepresentor<T,_Val> *diff1 = this->Diff(inters);
     StructureRepresentor<T,_Val> *diff2 = s->Diff(inters);
     StructureRepresentor<T,_Val> *res = diff1->Union(diff2);
+    delete inters,diff1,diff2;
     return res;
 }
 
@@ -395,9 +397,16 @@ vector<pair<T,_Val>> Splay_Tree<T,_Val>::getKeys()
 }
 
 template<typename T, typename _Val>
-void Splay_Tree<T,_Val>::sort()
+void Splay_Tree<T,_Val>::sortByKey()
 {
 
 }
+
+template<typename T, typename _Val>
+void Splay_Tree<T,_Val>::sortByValue()
+{
+
+}
+
 
 #endif // SPLAYTREE_H

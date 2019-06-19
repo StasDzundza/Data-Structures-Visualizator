@@ -43,6 +43,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    delete core;
+    delete insertWindow;
     delete ui;
 }
 
@@ -158,7 +160,7 @@ void MainWindow::on_diffBTN_clicked()
 
 void MainWindow::on_sortBTN_clicked()
 {
-
+    core->sortByKey(currentStructureIndex);
 }
 
 void MainWindow::on_clearBTN_clicked()
@@ -182,4 +184,9 @@ void MainWindow::changeStructure()
 void MainWindow::on_actionSet_path_to_graphviz_triggered()
 {
     core->setPathToGraphvizDotFile();
+}
+
+void MainWindow::on_sortValues_clicked()
+{
+    core->sortByValue(currentStructureIndex);
 }

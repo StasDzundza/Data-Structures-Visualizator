@@ -14,9 +14,10 @@ template<typename K,typename V>
 class StructureRepresentor{
 public:
     enum Type{SplayTree,RedBlack,LinkedList,HashTable,StlList,StlMap,StlVector};
-    virtual void insert(K key,V data) = 0;
-    virtual void remove(K key) = 0;
-    virtual V find(K key) = 0;
+    virtual ~StructureRepresentor(){};
+    virtual void insert(const K& key,const V& data) = 0;
+    virtual void remove(const K& key) = 0;
+    virtual V find(const K& key) = 0;
     virtual void writeDotFile(const char* filename) = 0;
     int getType(){return static_cast<int>(type);}
 
@@ -30,7 +31,9 @@ public:
 
     virtual vector<pair<K,V>> getKeys() = 0;
 
-    virtual void sort() = 0;
+    virtual void sortByKey() = 0;
+
+    virtual void sortByValue() = 0;
 
     virtual void clear() = 0;
 

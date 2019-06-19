@@ -10,11 +10,11 @@ template<typename K,typename V>
 class StlMap: public StructureRepresentor<K,V>{
 public:
     StlMap();
-    ~StlMap() = default;
-    void insert(K key, V value) override;
-    void remove(K key) override;
+    ~StlMap()override;
+    void insert(const K& key,const V& value) override;
+    void remove(const K& key) override;
     void clear() override;
-    V find(K key) override;
+    V find(const K& key) override;
     void writeDotFile(const char *fileName) override;
 
     StructureRepresentor<K,V>* Union(StructureRepresentor<K,V>*s)override;
@@ -22,7 +22,8 @@ public:
     StructureRepresentor<K,V>* SymDiff(StructureRepresentor<K,V>*s)override;
     StructureRepresentor<K,V>* Diff(StructureRepresentor<K,V>*s)override;
     vector<pair<K,V>> getKeys()override;
-    void sort()override;
+    void sortByKey()override;
+    void sortByValue()override;
     bool isEmpty()override;
 private:
     std::map<K,V> m_map;
@@ -36,13 +37,19 @@ StlMap<K,V>::StlMap()
 }
 
 template<typename K, typename V>
-void StlMap<K,V>::insert(K key, V value)
+StlMap<K,V>::~StlMap()
+{
+    clear();
+}
+
+template<typename K, typename V>
+void StlMap<K,V>::insert(const K& key,const V& value)
 {
     m_map[key] = value;
 }
 
 template<typename K,typename V>
-void StlMap<K,V>::remove(K key)
+void StlMap<K,V>::remove(const K& key)
 {
     typename std::map<K,V>::const_iterator itr = m_map.find(key);
     if(itr != m_map.end()){
@@ -57,7 +64,7 @@ void StlMap<K,V>::clear()
 }
 
 template<typename K,typename V>
-V StlMap<K,V>::find(K key)
+V StlMap<K,V>::find(const K& key)
 {
     typename std::map<K,V>::const_iterator itr = m_map.find(key);
     if(itr != m_map.end()){
@@ -127,6 +134,7 @@ StructureRepresentor<K, V> *StlMap<K, V>::SymDiff( StructureRepresentor<K, V> *s
     StructureRepresentor<K, V> *diff1 = this->Diff(inters);
     StructureRepresentor<K, V> *diff2 = s->Diff(inters);
     StructureRepresentor<K, V> *res = diff1->Union(diff2);
+    delete inters,diff1,diff2;
     return res;
 }
 
@@ -159,9 +167,15 @@ vector<pair<K,V>> StlMap<K, V>::getKeys()
 }
 
 template<typename K, typename V>
-void StlMap<K,V>::sort()
+void StlMap<K,V>::sortByKey()
 {
-    m_map.clear();
+
+}
+
+template<typename K, typename V>
+void StlMap<K,V>::sortByValue()
+{
+
 }
 
 template<typename K, typename V>

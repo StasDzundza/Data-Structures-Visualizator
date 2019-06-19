@@ -51,9 +51,10 @@ private slots:
 
     void on_actionSet_path_to_graphviz_triggered();
 
+    void on_sortValues_clicked();
+
 private:
     Ui::MainWindow *ui;
-    //CoreFacade*core;
     int currentStructureIndex;
     QDialog *insertWindow;
     CoreFacade<int,int>*core;

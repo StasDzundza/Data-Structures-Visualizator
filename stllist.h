@@ -18,16 +18,18 @@ class StlList : public StructureRepresentor<K,V>
 {
 public:
     StlList();
-    void insert(K key,V value)override;
-    void remove(K key)override;
-    V find(K key)override;
+    ~StlList()override;
+    void insert(const K& key,const V& value)override;
+    void remove(const K& key)override;
+    V find(const K& key)override;
     void writeDotFile(const char* filename)override;
     StructureRepresentor<K,V>* Union(StructureRepresentor<K,V>*s)override;
     StructureRepresentor<K,V>* Intersection(StructureRepresentor<K,V>*s)override;
     StructureRepresentor<K,V>* SymDiff(StructureRepresentor<K,V>*s)override;
     StructureRepresentor<K,V>* Diff(StructureRepresentor<K,V>*s)override;
     vector<pair<K,V>> getKeys()override;
-    void sort()override;
+    void sortByKey()override;
+    void sortByValue()override;
     void clear()override;
     bool isEmpty()override;
 private:
@@ -40,14 +42,20 @@ StlList<K,V>::StlList()
     StructureRepresentor<K,V>::type = StructureRepresentor<K,V>::Type::StlList;
 }
 
+template<typename K, typename V>
+StlList<K,V>::~StlList()
+{
+    clear();
+}
+
 template<typename K,typename V>
-void StlList<K,V>::insert(K key,V value)
+void StlList<K,V>::insert(const K& key,const V& value)
 {
     list.emplace_front(key,value);
 }
 
 template<typename K,typename V>
-void StlList<K,V>::remove(K key)
+void StlList<K,V>::remove(const K& key)
 {
     auto element = std::find_if(list.begin(),list.end(),[key](const pair<int,int>&pair){return pair.first == key;});
     if(element !=list.end())
@@ -57,7 +65,7 @@ void StlList<K,V>::remove(K key)
 }
 
 template<typename K,typename V>
-V StlList<K,V>::find(K key)
+V StlList<K,V>::find(const K& key)
 {
     auto element = std::find_if(list.begin(),list.end(),[key](const pair<int,int>&pair){return pair.first == key;});
     if(element !=list.end())
@@ -138,6 +146,7 @@ StructureRepresentor<K, V> *StlList<K, V>::SymDiff( StructureRepresentor<K, V> *
     StructureRepresentor<K, V> *diff1 = this->Diff(inters);
     StructureRepresentor<K, V> *diff2 = s->Diff(inters);
     StructureRepresentor<K, V> *res = diff1->Union(diff2);
+    delete inters,diff1,diff2;
     return res;
 }
 
@@ -170,9 +179,15 @@ vector<pair<K,V>> StlList<K, V>::getKeys()
 }
 
 template<typename K, typename V>
-void StlList<K,V>::sort()
+void StlList<K,V>::sortByKey()
 {
+    list.sort([](const pair<K,V>&p1,const pair<K,V>&p2){return p1.first > p2.first;});
+}
 
+template<typename K, typename V>
+void StlList<K,V>::sortByValue()
+{
+    list.sort([](const pair<K,V>&p1,const pair<K,V>&p2){return p1.second > p2.second;});
 }
 
 template<typename K, typename V>

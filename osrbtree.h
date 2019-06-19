@@ -8,6 +8,7 @@
 #include <vector>
 #include <iostream>
 #include "structurerepresentor.h"
+#include <queue>
 
 using namespace std;
 
@@ -37,7 +38,6 @@ private:
     void DeleteNodeHelper(Node *z);
     Node* OS_SelectHelper(unsigned, Node*x);
     unsigned OS_RankHelper(Node* x);
-    void WriteToGV(ofstream & fout, Node* x);
     void OS_Select(unsigned);
     void OS_Rank(Key key);
     Node* Find(Key value);
@@ -46,24 +46,19 @@ private:
 public:
 
     OSTreeRB();
+    ~OSTreeRB()override;
 
-    void writeDotFile(const char* fileName)override
-    {
-        ofstream fout(fileName);
-        fout << "digraph {\n";
-        WriteToGV(fout, root);
-        fout << "}";
-        fout.close();
-    }
-    void insert(Key key,T value)override;
-    void remove(Key key)override;
-    T find(Key value)override;
+    void writeDotFile(const char* fileName)override;
+    void insert(const Key& key,const T& value)override;
+    void remove(const Key& key)override;
+    T find(const Key& value)override;
     StructureRepresentor<Key,T>* Union( StructureRepresentor<Key,T>*s)override;
     StructureRepresentor<Key,T>* Intersection( StructureRepresentor<Key,T>*s)override;
     StructureRepresentor<Key,T>* SymDiff( StructureRepresentor<Key,T>*s)override;
     StructureRepresentor<Key,T>* Diff( StructureRepresentor<Key,T>*s)override;
     vector<pair<Key,T>> getKeys()override;
-    void sort()override;
+    void sortByKey()override;
+    void sortByValue()override;
     void clear()override;
 
 
@@ -74,6 +69,12 @@ template<typename Key, typename T>
 OSTreeRB<Key, T>::OSTreeRB()
 {
     OSTreeRB::root = null_node;
+}
+
+template<typename Key, typename T>
+OSTreeRB<Key, T>::~OSTreeRB()
+{
+    clear();
 }
 
 template<typename Key, typename T>
@@ -185,7 +186,7 @@ void OSTreeRB<Key, T>::InsertFixup(Node* x)
 }
 
 template<typename Key, typename T>
-void OSTreeRB<Key, T>::insert(Key key,T value)
+void OSTreeRB<Key, T>::insert(const Key& key,const T& value)
 {
     Node* current, * parent, * x;
 
@@ -226,33 +227,40 @@ const string colors[]{ "black","red" };
 
 //function for graphviz
 template<typename Key, typename T>
-void OSTreeRB<Key, T>::WriteToGV(ofstream& fout, Node* p)
-{
-    if (p != null_node) {
-        fout << p->value.second << "[shape=record,label=\" {" << p->value.second << "}\", color=\"" << colors[p->color] << "\"];\n";//сама структура
-        fout << p->value.second << "->" << p->left->value.second << ";\n";
-        fout << p->value.second << "->" << p->right->value.second << ";\n";
+void OSTreeRB<Key, T>::writeDotFile(const char*fileName)
+{    
+    std::ofstream fout(fileName);
+        fout << "digraph{\nnode [shape=record,fontname=\"Arial\",style=filled,fontcolor=white,color=green];\n" << std::endl;
+        if(!this->isEmpty()){
+            std::queue<Node *> q;
+            q.push(this->root);
+            while (!q.empty())
+            {
+                Node *temp = q.front();
+                fout << "      " << (quintptr)temp;
+                fout << "[fillcolor=" << (temp->color == Color::red ? "red" : "black");
+                fout << ",label=\"";
+                fout << "{key: " << temp->value.first << "|val:" << temp->value.second << "}";
+                fout << "\"];" << std::endl;
+                q.pop();
 
-        if (p->right != null_node) {
-            WriteToGV(fout, p->right);
-        }
-        if (p->right != null_node) cout << " /\n";
-        cout << p->value.first;
-        if (p->color == black) cout << " \'black\' ";
-        else cout << " \'red\' ";
-        cout << "size:" << p->size;
-        cout << p->value.second;
+                if (temp->left != null_node){
+                    q.push(temp->left);
+                    fout << (quintptr)temp << "->" << (quintptr)temp->left << ";\n";
+                }
 
-        if (p->left != null_node) {
-            cout << " \\\n";
-            WriteToGV(fout, p->left);
+                if (temp->right != null_node){
+                    q.push(temp->right);
+                    fout << (quintptr)temp << "->" << (quintptr)temp->right << ";\n";
+                }
+            }
         }
-    }
+        fout << "}";
 }
 
 //пошук за ключем
 template<typename Key, typename T>
-T OSTreeRB<Key, T>::find(Key value)
+T OSTreeRB<Key, T>::find(const Key& value)
 {
     Node* current = root;
     while (current != null_node)
@@ -344,7 +352,7 @@ void OSTreeRB<Key, T>::DeleteFixup(Node* x)
 
 //видалення вузла за ключем
 template<typename Key, typename T>
-void OSTreeRB<Key, T>::remove(Key key)
+void OSTreeRB<Key, T>::remove(const Key& key)
 {
     Node* x = Find(key);
     DeleteNodeHelper(x);
@@ -524,6 +532,7 @@ StructureRepresentor<Key,T> *OSTreeRB<Key,T>::SymDiff( StructureRepresentor<Key,
     StructureRepresentor<Key,T> *diff1 = this->Diff(inters);
     StructureRepresentor<Key,T> *diff2 = s->Diff(inters);
     StructureRepresentor<Key,T> *res = diff1->Union(diff2);
+    delete inters,diff1,diff2;
     return res;
 }
 
@@ -568,7 +577,13 @@ vector<pair<Key,T>> OSTreeRB<Key,T>::getKeys()
 }
 
 template<typename Key, typename T>
-void OSTreeRB<Key,T>::sort()
+void OSTreeRB<Key,T>::sortByKey()
+{
+
+}
+
+template<typename Key, typename T>
+void OSTreeRB<Key,T>::sortByValue()
 {
 
 }

@@ -28,17 +28,19 @@ public:
 
     CoreFacade(QGraphicsView*v1,QGraphicsView*v2,QStatusBar*bar,QWidget*parent);
 
-    void insert(K key,V value, int structureIndex);
+    ~CoreFacade();
 
-    void remove(K key, int structureIndex);
+    void insert(const K& key,const V& value,const int& structureIndex);
 
-    void drawStructure(int struct_index);
+    void remove(const K& key,const int& structureIndex);
+
+    void drawStructure(const int& struct_index);
 
     void drawStructure(StructureRepresentor<K,V>*s,QGraphicsView*view);
 
-    void randomInsert(int struct_index,int amount);
+    void randomInsert(const int& struct_index,const int& amount);
 
-    V find(int structure_index,K key);
+    V find(const int& structure_index,const K& key);
 
     void Union();
 
@@ -48,11 +50,13 @@ public:
 
     void Diff();
 
-    void getKeys(int structure_index);
+    void getKeys(const int& structure_index);
 
-    void sort();
+    void sortByValue(const int& struct_index);
 
-    void clear(int struct_index);
+    void sortByKey(const int& struct_index);
+
+    void clear(const int& struct_index);
 
     void changeStructure(const int& struct_index,const QString &iconText);
 
@@ -126,8 +130,15 @@ CoreFacade<K,V>::CoreFacade(QGraphicsView*v1,QGraphicsView*v2,QStatusBar*bar,QWi
     }
 }
 
+template<typename K, typename V>
+CoreFacade<K,V>::~CoreFacade()
+{
+    delete s1,s2;
+    delete factory,drawer,sView,random;
+}
+
 template <typename K,typename V>
-void CoreFacade<K,V>::insert(K key, V value, int struct_index)
+void CoreFacade<K,V>::insert(const K& key,const V& value,const int& struct_index)
 {
     StructureRepresentor<K,V>*s = getStructureFromIndex(struct_index);
     auto begin = std::chrono::steady_clock::now();
@@ -138,7 +149,7 @@ void CoreFacade<K,V>::insert(K key, V value, int struct_index)
 }
 
 template<typename K, typename V>
-void CoreFacade<K,V>::remove(K key, int structureIndex)
+void CoreFacade<K,V>::remove(const K& key,const int& structureIndex)
 {
     StructureRepresentor<K,V>*s = getStructureFromIndex(structureIndex);
     auto begin = std::chrono::steady_clock::now();
@@ -149,7 +160,7 @@ void CoreFacade<K,V>::remove(K key, int structureIndex)
 }
 
 template <typename K,typename V>
-void CoreFacade<K,V>::drawStructure(int struct_index)
+void CoreFacade<K,V>::drawStructure(const int& struct_index)
 {
     StructureRepresentor<K,V>*s = getStructureFromIndex(struct_index);
     QGraphicsView*view = getViewFromIndex(struct_index);
@@ -194,7 +205,7 @@ void CoreFacade<K,V>::drawStructure(StructureRepresentor<K, V> *s,QGraphicsView*
 }
 
 template<typename K, typename V>
-void CoreFacade<K,V>::randomInsert(int struct_index,int amount)
+void CoreFacade<K,V>::randomInsert(const int& struct_index,const int& amount)
 {
     StructureRepresentor<K,V>*s = getStructureFromIndex(struct_index);
     if(s->isEmpty())
@@ -212,7 +223,7 @@ void CoreFacade<K,V>::randomInsert(int struct_index,int amount)
 }
 
 template<typename K, typename V>
-V CoreFacade<K,V>::find(int structure_index,K key)
+V CoreFacade<K,V>::find(const int& structure_index,const K& key)
 {
     StructureRepresentor<K,V>*s = getStructureFromIndex(structure_index);
     auto begin = std::chrono::steady_clock::now();
@@ -231,43 +242,47 @@ void CoreFacade<K,V>::Union()
    auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
    setTimePassed(QString::number(elapsed_ms.count()));
    drawStructure(U,sView->getView());
+   delete U;
 }
 
 template<typename K, typename V>
 void CoreFacade<K,V>::Intersection()
 {
     auto begin = std::chrono::steady_clock::now();
-    StructureRepresentor<K, V>*U = s1->Intersection(s2);
+    StructureRepresentor<K, V>*I = s1->Intersection(s2);
     auto end = std::chrono::steady_clock::now();
     auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     setTimePassed(QString::number(elapsed_ms.count()));
-    drawStructure(U,sView->getView());
+    drawStructure(I,sView->getView());
+    delete I;
 }
 
 template<typename K, typename V>
 void CoreFacade<K,V>::SymDiff()
 {
     auto begin = std::chrono::steady_clock::now();
-    StructureRepresentor<K, V>*U = s1->SymDiff(s2);
+    StructureRepresentor<K, V>*SD = s1->SymDiff(s2);
     auto end = std::chrono::steady_clock::now();
     auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     setTimePassed(QString::number(elapsed_ms.count()));
-    drawStructure(U,sView->getView());
+    drawStructure(SD,sView->getView());
+    delete SD;
 }
 
 template<typename K, typename V>
 void CoreFacade<K,V>::Diff()
 {
     auto begin = std::chrono::steady_clock::now();
-    StructureRepresentor<K, V>*U = s1->Diff(s2);
+    StructureRepresentor<K, V>*D = s1->Diff(s2);
     auto end = std::chrono::steady_clock::now();
     auto elapsed_ms = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
     setTimePassed(QString::number(elapsed_ms.count()));
-    drawStructure(U,sView->getView());
+    drawStructure(D,sView->getView());
+    delete D;
 }
 
 template<typename K, typename V>
-void CoreFacade<K,V>::getKeys(int structure_index)
+void CoreFacade<K,V>::getKeys(const int& structure_index)
 {
     StructureRepresentor<K, V>*keys = new StlList<K,V>;
     StructureRepresentor<K,V>*s = getStructureFromIndex(structure_index);
@@ -282,13 +297,23 @@ void CoreFacade<K,V>::getKeys(int structure_index)
 }
 
 template<typename K, typename V>
-void CoreFacade<K,V>::sort()
+void CoreFacade<K,V>::sortByKey(const int& struct_index)
 {
+    StructureRepresentor<K,V>*s = getStructureFromIndex(struct_index);
 
+    drawStructure(struct_index);
 }
 
 template<typename K, typename V>
-void CoreFacade<K,V>::clear(int struct_index)
+void CoreFacade<K,V>::sortByValue(const int& struct_index)
+{
+    StructureRepresentor<K,V>*s = getStructureFromIndex(struct_index);
+
+    drawStructure(struct_index);
+}
+
+template<typename K, typename V>
+void CoreFacade<K,V>::clear(const int& struct_index)
 {
     StructureRepresentor<K,V>*s = getStructureFromIndex(struct_index);
     auto begin = std::chrono::steady_clock::now();

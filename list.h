@@ -9,18 +9,19 @@ class List:public StructureRepresentor<K,V>
 {
 public:
     List();
-    ~List();
+    ~List()override;
 
-    void insert(K data,V value)override;
-    void remove(K key)override;
-    V find(K key)override;
+    void insert(const K& data,const V& value)override;
+    void remove(const K& key)override;
+    V find(const K& key)override;
     void writeDotFile(const char* filename)override;
     StructureRepresentor<K,V>* Union(StructureRepresentor<K,V>*s)override;
     StructureRepresentor<K,V>* Intersection(StructureRepresentor<K,V>*s)override;
     StructureRepresentor<K,V>* SymDiff(StructureRepresentor<K,V>*s)override;
     StructureRepresentor<K,V>* Diff(StructureRepresentor<K,V>*s)override;
     vector<pair<K,V>> getKeys()override;
-    void sort()override;
+    void sortByKey()override;
+    void sortByValue()override;
     void clear()override;
     bool isEmpty()override;
 private:
@@ -79,14 +80,14 @@ bool List<K,V>::isEmpty()
     return Size == 0;
 }
 template<typename K, typename V>
-void List<K, V>::insert(K data,V value)
+void List<K, V>::insert(const K& data,const V& value)
 {
     head = new Node<K,V>(data,value,head);
     Size++;
 }
 
 template<typename K, typename V>
-void List<K, V>::remove(K key)
+void List<K, V>::remove(const K& key)
 {
     Node<K, V>* current = head;
     if (current && current->key == key)
@@ -112,7 +113,7 @@ void List<K, V>::remove(K key)
     }
 }
 template<typename K, typename V>
-V List<K, V>::find(K key)
+V List<K, V>::find(const K& key)
 {
     Node<K, V>* current = head;
     if (current && current->key == key)
@@ -213,6 +214,7 @@ StructureRepresentor<K, V> *List<K, V>::SymDiff( StructureRepresentor<K, V> *s)
     StructureRepresentor<K, V> *diff1 = this->Diff(inters);
     StructureRepresentor<K, V> *diff2 = s->Diff(inters);
     StructureRepresentor<K, V> *res = diff1->Union(diff2);
+    delete inters,diff1,diff2;
     return res;
 }
 
@@ -247,8 +249,15 @@ vector<pair<K,V>> List<K, V>::getKeys()
 }
 
 template<typename K, typename V>
-void List<K,V>::sort()
+void List<K,V>::sortByKey()
 {
 
 }
+
+template<typename K, typename V>
+void List<K,V>::sortByValue()
+{
+
+}
+
 #endif // LIST_H

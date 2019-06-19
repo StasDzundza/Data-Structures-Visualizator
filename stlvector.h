@@ -15,16 +15,18 @@ class StlVector: public StructureRepresentor<K,V>
 {
 public:
     StlVector();
-    void insert(K key,V value)override;
-    void remove(K key)override;
-    V find(K key)override;
+    ~StlVector()override;
+    void insert(const K& key,const V& value)override;
+    void remove(const K& key)override;
+    V find(const K& key)override;
     void writeDotFile(const char* filename)override;
     StructureRepresentor<K,V>* Union(StructureRepresentor<K,V>*s)override;
     StructureRepresentor<K,V>* Intersection(StructureRepresentor<K,V>*s)override;
     StructureRepresentor<K,V>* SymDiff(StructureRepresentor<K,V>*s)override;
     StructureRepresentor<K,V>* Diff(StructureRepresentor<K,V>*s)override;
     vector<pair<K,V>> getKeys()override;
-    void sort()override;
+    void sortByKey()override;
+    void sortByValue()override;
     void clear()override;
     bool isEmpty()override;
 private:
@@ -37,14 +39,20 @@ StlVector<K,V>::StlVector()
     StructureRepresentor<K,V>::type = StructureRepresentor<K,V>::Type::StlVector;
 }
 
+template<typename K, typename V>
+StlVector<K,V>::~StlVector()
+{
+    clear();
+}
+
 template<typename K,typename V>
-void StlVector<K,V>::insert(K key,V value)
+void StlVector<K,V>::insert(const K& key,const V& value)
 {
     m_vector.emplace_back(key,value);
 }
 
 template<typename K,typename V>
-void StlVector<K,V>::remove(K key)
+void StlVector<K,V>::remove(const K& key)
 {
     auto element = std::find_if(m_vector.begin(),m_vector.end(),[key](const pair<K,V>&pair){return pair.first == key;});
     if(element !=m_vector.end())
@@ -54,7 +62,7 @@ void StlVector<K,V>::remove(K key)
 }
 
 template<typename K,typename V>
-V StlVector<K,V>::find(K key)
+V StlVector<K,V>::find(const K& key)
 {
     auto element = std::find_if(m_vector.begin(),m_vector.end(),[key](const pair<K,V>&pair){return pair.first == key;});
     if(element !=m_vector.end())
@@ -135,6 +143,7 @@ StructureRepresentor<K, V> *StlVector<K,V>::SymDiff( StructureRepresentor<K, V> 
     StructureRepresentor<K, V> *diff1 = this->Diff(inters);
     StructureRepresentor<K, V> *diff2 = s->Diff(inters);
     StructureRepresentor<K, V> *res = diff1->Union(diff2);
+    delete inters,diff1,diff2;
     return res;
 
 }
@@ -168,7 +177,13 @@ vector<pair<K,V>> StlVector<K,V>::getKeys()
 }
 
 template<typename K, typename V>
-void StlVector<K,V>::sort()
+void StlVector<K,V>::sortByValue()
+{
+
+}
+
+template<typename K, typename V>
+void StlVector<K,V>::sortByKey()
 {
 
 }

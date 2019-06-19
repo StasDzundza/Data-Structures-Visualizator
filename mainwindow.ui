@@ -147,7 +147,14 @@
         <item>
          <widget class="QPushButton" name="sortBTN">
           <property name="text">
-           <string>Sort</string>
+           <string>Sort(by key)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="sortValues">
+          <property name="text">
+           <string>Sort(by value)</string>
           </property>
          </widget>
         </item>
